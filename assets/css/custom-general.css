@@ -1,0 +1,47 @@
+#loader {
+	background: #0c0c0cad !important;
+}
+
+.zmdi {
+	display: inline-block;
+	font: normal normal normal 14px/1 "Material-Design-Iconic-Font";
+	font-size: 16px;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.zmdi-rotate-right:before {
+	content: "\f307";
+}
+
+.zmdi-hc-spin-reverse {
+	-webkit-animation: zmdi-spin-reverse 1.5s infinite linear;
+	animation: zmdi-spin-reverse 1.5s infinite linear;
+}
+
+.zmdi-hc-3x {
+	font-size: 3em;
+}
+
+@-webkit-keyframes zmdi-spin-reverse {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(-359deg);
+		transform: rotate(-359deg);
+	}
+}
+
+@keyframes zmdi-spin-reverse {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(-359deg);
+		transform: rotate(-359deg);
+	}
+}

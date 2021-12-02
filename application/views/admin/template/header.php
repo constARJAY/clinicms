@@ -28,8 +28,16 @@
     <link href="<?= base_url('assets/css/fontawesome.css') ?>" rel="stylesheet">
     <link href="<?= base_url('assets/css/brands.css') ?>" rel="stylesheet">
     <link href="<?= base_url('assets/css/solid.css') ?>" rel="stylesheet">
+
+    <!-- jQuery -->
+    <link rel="stylesheet" href="<?= base_url('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') ?>">
+    <script src="<?= base_url('assets/js/jquery-3.2.1.min.js') ?>"></script>
+    <!-- End jQuery -->
+
+    <link rel="stylesheet" href="<?= base_url('assets/css/custom-general.css') ?>">
+    <script src="<?= base_url('assets/js/custom-general.js') ?>"></script>
 </head>
-<body>
+<body base_url="<?= base_url() ?>">
     <div class="container-scroller">
 
         <!-- ----- TOP MENU ----- -->
@@ -129,18 +137,24 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../widgets/widgets.html">
+                        <a class="nav-link" href="<?= base_url('admin/patient') ?>">
                         <i class="fas fa-users"></i>
                         <span class="menu-title ml-3"> Patient</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#medicine-menu" aria-expanded="false" aria-controls="medicine-menu">
-                            <i class="fas fa-capsules"></i>
-                            <span class="menu-title ml-3"> Medicine</span>
+                        <a class="nav-link" href="<?= base_url('admin/patient') ?>">
+                        <i class="fas fa-capsules"></i>
+                        <span class="menu-title ml-3"> Medicine</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#dental-menu" aria-expanded="false" aria-controls="dental-menu">
+                            <i class="fas fa-tooth"></i>
+                            <span class="menu-title ml-3"> Dental</span>
                             <i class="menu-arrow"></i>
                         </a>
-                        <div class="collapse" id="medicine-menu">
+                        <div class="collapse" id="dental-menu">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item"> <a class="nav-link" href="../ui-features/accordions.html">Check-up Form</a></li>
                             <li class="nav-item"> <a class="nav-link" href="../ui-features/accordions.html">Check-up Records</a></li>
