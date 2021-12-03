@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="<?= base_url('assets/vendors/jqvmap/jqvmap.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/vendors/flag-icon-css/css/flag-icon.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/vendors/font-awesome/css/font-awesome.min.css') ?>"/>
-    <link rel="stylesheet" href="<?= base_url('assets/vendors/jquery-toast-plugin/jquery.toast.min.css') ?>">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -35,34 +34,17 @@
     <script src="<?= base_url('assets/js/jquery-3.2.1.min.js') ?>"></script>
     <!-- End jQuery -->
 
-    <!-- Sweet Alert -->
-    <link rel="stylesheet" href="<?=base_url('assets/css/sweetalert2.css')?>">
-    <link rel="stylesheet" href="<?=base_url('assets/css/sweetalert2.min.css')?>">
-
-    <script src="<?=base_url('assets/js/sweetalert2.all.min.js')?>"></script>
-    <script src="<?=base_url('assets/js/sweetalert2.min.js')?>"></script>
-    <!-- End Sweet Alert -->
-
     <link rel="stylesheet" href="<?= base_url('assets/css/custom-general.css') ?>">
+    <script src="<?= base_url('assets/js/custom-general.js') ?>"></script>
 </head>
 <body base_url="<?= base_url() ?>">
-
     <div class="container-scroller">
-
-        <div style="display: none;" id="loader">
-            <div class="h-100 d-flex flex-column justify-content-center align-items-center">
-                <div class="circle-loader"></div>
-                <p class="mt-2 text-white">Please wait...</p>
-            </div>
-        </div>
 
         <!-- ----- TOP MENU ----- -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center">
-                <a class="navbar-brand brand-logo" href="#">Clinic MS</a>
-                <a class="navbar-brand brand-logo-mini" href="#">CMS</a>
-                <!-- <a class="navbar-brand brand-logo" href="../../index.html"><img src="http://www.urbanui.com/yoraui/template/images/logo.svg" alt="logo"/></a>
-                <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="http://www.urbanui.com/yoraui/template/images/logo-mini.svg" alt="logo"/></a> -->
+                <a class="navbar-brand brand-logo" href="../../index.html"><img src="http://www.urbanui.com/yoraui/template/images/logo.svg" alt="logo"/></a>
+                <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="http://www.urbanui.com/yoraui/template/images/logo-mini.svg" alt="logo"/></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -149,7 +131,7 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url('admin/dashboard') ?>">
+                        <a class="nav-link" href="../../index.html">
                         <i class="fas fa-tachometer-alt"></i>
                         <span class="menu-title ml-3">Dashboard</span>
                         </a>
@@ -161,7 +143,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url('admin/medicine') ?>">
+                        <a class="nav-link" href="<?= base_url('admin/patient') ?>">
                         <i class="fas fa-capsules"></i>
                         <span class="menu-title ml-3"> Medicine</span>
                         </a>
@@ -174,9 +156,9 @@
                         </a>
                         <div class="collapse" id="dental-menu">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/checkup_form') ?>">Check-up Form</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/checkup_records') ?>">Check-up Records</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/dental_certificate') ?>">Dental Certificate</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="../ui-features/accordions.html">Check-up Form</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="../ui-features/accordions.html">Check-up Records</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="../ui-features/accordions.html">Dental Certificate</a></li>
                         </ul>
                         </div>
                     </li>
@@ -188,8 +170,8 @@
                         </a>
                         <div class="collapse" id="equipment-menu">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/first_aid_kit') ?>">First-aid Kit</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/care_equipment') ?>">Care Equipment</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="../ui-features/accordions.html">First-aid Kit</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="../ui-features/accordions.html">Care Equipment</a></li>
                         </ul>
                         </div>
                     </li>
@@ -203,12 +185,6 @@
                         <a class="nav-link" href="../widgets/widgets.html">
                         <i class="fas fa-calendar"></i>
                         <span class="menu-title ml-3"> Calendar</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url('admin/appointment') ?>">
-                        <i class="fas fa-calendar"></i>
-                        <span class="menu-title ml-3"> Appointment</span>
                         </a>
                     </li>
                     <li class="nav-item">

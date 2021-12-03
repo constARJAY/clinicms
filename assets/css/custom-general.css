@@ -1,5 +1,12 @@
 #loader {
 	background: #0c0c0cad !important;
+	width: 100vw !important;
+	height: 100vh !important;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	/* display: none; */
 }
 
 .zmdi {
@@ -44,4 +51,14 @@
 		-webkit-transform: rotate(-359deg);
 		transform: rotate(-359deg);
 	}
+}
+
+
+.has-error {
+	border: 2px solid #dc3545 !important;
+	border-radius: 0.25rem !important;
+}
+.no-error {
+	border: 2px solid #28a745 !important;
+	border-radius: 0.25rem !important;
 }

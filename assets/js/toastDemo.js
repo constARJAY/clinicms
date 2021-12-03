@@ -1,4 +1,31 @@
 (function($) {
+
+  showNotification = function(icon = "", text = "") {
+
+    if (icon && text) {
+      let r_icon = icon.toLowerCase();
+      let r_heading = "Success";
+      if (r_icon == "danger") {
+        r_heading = "Error";
+      } else if (r_icon == "warning") {
+        r_heading = "Warning";
+      }
+
+      'use strict';
+      resetToastPosition();
+      $.toast({
+        heading: r_heading,
+        text,
+        showHideTransition: 'slide',
+        icon: r_icon,
+        loaderBg: '#f96868',
+        position: 'top-right'
+      })
+    }
+
+  };
+
+
   showSuccessToast = function() {
     'use strict';
     resetToastPosition();

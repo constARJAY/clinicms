@@ -7,26 +7,6 @@
                 <!-- ----- END FOOTER ----- -->
             </div>
             <!-- ----- END MAIN CONTENT ----- -->
-
-
-            <!-- ----- MODAL ----- -->
-            <div id="modal" class="modal custom-modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
-                <div class="modal-dialog modal-md mt-5" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary text-light">
-                            <h4 class="page-title font-weight-bold"></h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span class="text-light" aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div id="modal_content"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- ----- END MODAL ----- -->
-        
-
         </div>
         <!-- ----- END CONTENT ----- -->
 
@@ -52,9 +32,6 @@
     <script src="<?= base_url('assets/js/template.js') ?>"></script>
     <script src="<?= base_url('assets/js/settings.js') ?>"></script>
     <script src="<?= base_url('assets/js/todolist.js') ?>"></script>
-    <script src="<?= base_url('assets/vendors/jquery-toast-plugin/jquery.toast.min.js') ?>"></script>
-    <script src="<?= base_url('assets/js/toastDemo.js') ?>"></script>
-    <script src="<?= base_url('assets/js/desktop-notification.js') ?>"></script>
     <!-- endinject -->
 
     <!-- DataTables -->
@@ -66,8 +43,5 @@
     <script defer src="<?= base_url('assets/js/brands.js') ?>"></script>
     <script defer src="<?= base_url('assets/js/solid.js') ?>"></script>
     <script defer src="<?= base_url('assets/js/fontawesome.js') ?>"></script>
-
-    <script src="<?= base_url('assets/js/system-operations.js') ?>"></script>
-    <script src="<?= base_url('assets/js/custom-general.js') ?>"></script>
 </body>
 </html>
