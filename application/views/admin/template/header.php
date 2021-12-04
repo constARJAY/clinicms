@@ -219,7 +219,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../widgets/widgets.html">
+                        <a class="nav-link" href="<?= base_url('admin/survey') ?>">
+                        <i class="fas fa-poll"></i>
+                        <span class="menu-title ml-3"> Survey</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('admin/users') ?>">
                         <i class="fas fa-user-cog"></i>
                         <span class="menu-title ml-3"> Users</span>
                         </a>

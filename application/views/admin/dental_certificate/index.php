@@ -3,8 +3,10 @@
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="card">
-                <div class="card-body" id="pageContent">          
+                <div class="card-header">   
+                    <h4>Dental Certificate</h4>
                 </div>
+                <div class="card-body" id="pageContent"></div>
             </div>
         </div>
     </div>
@@ -18,18 +20,17 @@
     $(document).ready(function() {
 
         // ----- GLOBAL VARIABLES -----
-        let courseList      = getTableData(`courses WHERE is_deleted = 0`);
-        let patientTypeList = getTableData('patient_type WHERE is_deleted = 0');
+        let measurementList = getTableData(`measurements WHERE is_deleted = 0`);
         // ----- END GLOBAL VARIABLES -----
 
 
         // ----- DATATABLES -----
         function initDataTables() {
-            if ($.fn.DataTable.isDataTable("#tableCheckupForm")) {
-                $("#tableCheckupForm").DataTable().destroy();
+            if ($.fn.DataTable.isDataTable("#tableFirstAidKit")) {
+                $("#tableFirstAidKit").DataTable().destroy();
             }
             
-            var table = $("#tableCheckupForm")
+            var table = $("#tableFirstAidKit")
                 .css({ "min-width": "100%" })
                 .removeAttr("width")
                 .DataTable({
@@ -39,97 +40,71 @@
                     sorting:        [],
                     scrollCollapse: true,
                     columnDefs: [
-                        // { targets: "thXs", width: 50  },	
-                        // { targets: "thSm", width: 150 },	
-                        // { targets: "thMd", width: 250 },	
-                        // { targets: "thLg", width: 350 },	
-                        // { targets: "thXl", width: 450 },	
-                        { targets: 0, width: '250px' },
-                        { targets: 1, width: '250px' },
-                        { targets: 2, width: '250px' },
-                        { targets: 3, width: '250px' },
+                        { targets: "thXs", width: 50  },	
+                        { targets: "thSm", width: 150 },	
+                        { targets: "thMd", width: 250 },	
+                        { targets: "thLg", width: 350 },	
+                        { targets: "thXl", width: 450 },	
                     ],
                 });
         }
         // ----- END DATATABLES -----
 
 
-        // ----- MEDICINE TYPE OPTIONS DISPLAY -----
-        function getMedicineTypeOptionDisplay(patientTypeID = 0, isAll = false) {
-            let html = isAll ? `<option value="0">All</option>` : `<option value="" selected>Select patient type</option>`;
-            patientTypeList.map(type => {
-                let {
-                    patient_type_id,
-                    name
-                } = type;
-
-                html += `
-                <option value="${patient_type_id}"
-                    ${patient_type_id == patientTypeID ? "selected" : ""}>${name}</option>`;
-            })
-            return html;
-        }
-        // ----- END MEDICINE TYPE OPTIONS DISPLAY -----
-
-
-        // ----- COURSE OPTIONS DISPLAY -----
-        function getCourseOptionDisplay(courseID = 0) {
-            let html = `<option value="" selected>Select course</option>`;
-            courseList.map(course => {
-                let {
-                    course_id,
-                    name
-                } = course;
-
-                html += `
-                <option value="${course_id}"
-                    ${course_id == courseID ? "selected" : ""}>${name}</option>`;
-            })
-            return html;
-        }
-        // ----- END COURSE OPTIONS DISPLAY -----
-
-
         // ----- TABLE CONTENT -----
         function tableContent() {
 
             let tbodyHTML = '';
-            let data = getTableData(`medicines WHERE is_deleted = 0`);
+            let data = getTableData(`
+                first_aid_kits AS fak
+                    LEFT JOIN measurements AS m USING(measurement_id) WHERE fak.is_deleted = 0`,
+                `fak.*, m.name AS m_name`);
             data.map(item => {
                 let {
-                    medicine_id = "",
-                    name        = "",
-                    brand       = "",
-                    quantity    = "",
+                    first_aid_kit_id = "",
+                    name             = "",
+                    quantity         = "",
+                    m_name           = "",
                 } = item;
+
+                let maximumValue = 500;
+                let ariaValue  = quantity > maximumValue ? maximumValue : quantity;
+                let percentage = ariaValue / maximumValue * 100;
+                    percentage = percentage.toFixed(1);
 
                 tbodyHTML += `
                 <tr>
+                    <td>
+                        <div class="progress progress-lg mt-2">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: ${percentage}%" aria-valuenow="${ariaValue}" aria-valuemin="0" aria-valuemax="${maximumValue}">${percentage}%</div>
+                        </div>
+                    </td>
                     <td>${name}</td>
-                    <td>${brand}</td>
+                    <td>${m_name}</td>
                     <td>${quantity}</td>
                     <td>
                         <div class="text-center">
                             <button class="btn btn-outline-info btnEdit"
-                                medicineID="${medicine_id}"><i class="fas fa-pencil-alt"></i></button>
+                                firstAidKitID="${first_aid_kit_id}"><i class="fas fa-pencil-alt"></i></button>
                             <button class="btn btn-outline-danger btnDelete"
-                                medicineID="${medicine_id}"><i class="fas fa-trash-alt"></i></button>
+                                firstAidKitID="${first_aid_kit_id}"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </td>
                 </tr>`;
             });
 
             let html = `
-            <table class="table table-bordered" id="tableCheckupForm">
+            <table class="table table-bordered" id="tableFirstAidKit">
                 <thead>
                     <tr class="text-center">
-                        <th>Name</th>
-                        <th>Brand</th>
-                        <th>Quantity</th>
-                        <th>Action</th>
+                        <th class="thMd">Percentage</th>
+                        <th class="thSm">Equipment Name</th>
+                        <th class="thSm">Measurement</th>
+                        <th class="thXs">Quantity</th>
+                        <th class="thSm">Action</th>
                     </tr>
                 </thead>
-                <tbody id="tableCheckupFormTbody">
+                <tbody id="tableFirstAidKitTbody">
                     ${tbodyHTML}
                 </tbody>
             </table>`;
@@ -162,9 +137,8 @@
                     <div class="row mb-4">
                         <div class="col-md-4 col-sm-12"></div>
                         <div class="col-md-8 col-sm-12 text-right">
-                            <a class="btn btn-primary"
-                                href="checkup_form/add"
-                                id="btnAdd"><i class="fas fa-plus"></i> Add Check-up Form</a>
+                            <button class="btn btn-primary"
+                                id="btnAdd"><i class="fas fa-plus"></i> Add First-aid Kit</button>
                         </div>
                     </div>
                 </div>
@@ -180,28 +154,46 @@
         // ----- END PAGE CONTENT -----
 
 
+        // ----- MEASUREMENT OPTIONS DISPLAY -----
+        function getMeasurementOptionDisplay(measurementID = 0) {
+            let html = `<option value="" selected>Select measurement</option>`;
+            measurementList.map(measurement => {
+                let {
+                    measurement_id,
+                    name
+                } = measurement;
+
+                html += `
+                <option value="${measurement_id}"
+                    ${measurement_id == measurementID ? "selected" : ""}>${name}</option>`;
+            })
+            return html;
+        }
+        // ----- END MEASUREMENT OPTIONS DISPLAY -----
+
+
         // ----- FORM CONTENT -----
         function formContent(data = false, isUpdate = false) {
             let {
-                medicine_id = "",
-                name        = "",
-                brand       = "",
-                quantity    = "",
+                first_aid_kit_id = "",
+                measurement_id   = "",
+                name             = "",
+                quantity         = "",
             } = data && data[0];
 
             let buttonSaveUpdate = !isUpdate ? `
             <button class="btn btn-primary" 
                 id="btnSave"
-                medicineID="${medicine_id}">Save</button>` : `
+                firstAidKitID="${first_aid_kit_id}">Save</button>` : `
             <button class="btn btn-primary" 
                 id="btnUpdate"
-                medicineID="${medicine_id}">Update</button>`;
+                firstAidKitID="${first_aid_kit_id}">Update</button>`;
 
             let html = `
             <div class="row p-3">
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
-                        <label>Name <code>*</code></label>
+                        <label>Equipment Name <code>*</code></label>
                         <input type="text" 
                             class="form-control validate"
                             name="name"
@@ -214,14 +206,12 @@
                 </div>
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
-                        <label>Brand <code>*</code></label>
-                        <input type="text" 
-                            class="form-control validate"
-                            name="brand"
-                            minlength="2"
-                            maxlength="20"
-                            value="${brand}"
+                        <label>Measurement <code>*</code></label>
+                        <select class="form-control validate"
+                            name="measurement_id"
                             required>
+                            ${getMeasurementOptionDisplay(measurement_id)}    
+                        </select>
                         <div class="d-block invalid-feedback"></div>
                     </div>
                 </div>
@@ -250,25 +240,25 @@
 
 
         // ----- BUTTON ADD -----
-        // $(document).on("click", "#btnAdd", function() {
-        //     let html = formContent();
-        //     $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
-        //     $("#modal_content").html(html);
-        //     $("#modal .page-title").text("ADD MEDICINE");
-        //     $("#modal").modal('show');
-        //     generateInputsID("#modal");
-        // });
+        $(document).on("click", "#btnAdd", function() {
+            let html = formContent();
+            $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
+            $("#modal_content").html(html);
+            $("#modal .page-title").text("ADD FIRST-AID KIT");
+            $("#modal").modal('show');
+            generateInputsID("#modal");
+        });
         // ----- END BUTTON ADD -----
 
 
         // ----- BUTTON EDIT -----
         $(document).on("click", ".btnEdit", function() {
-            let medicineID = $(this).attr("medicineID");
-            let data = getTableData(`medicines WHERE medicine_id = ${medicineID}`);
+            let firstAidKitID = $(this).attr("firstAidKitID");
+            let data = getTableData(`first_aid_kits WHERE first_aid_kit_id = ${firstAidKitID}`);
 
             $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
             $("#modal_content").html(preloader);
-            $("#modal .page-title").text("EDIT MEDICINE");
+            $("#modal .page-title").text("EDIT FIRST-AID KIT");
             $("#modal").modal('show');
 
             setTimeout(() => {
@@ -282,18 +272,18 @@
 
         // ----- BUTTON SAVE -----
         $(document).on("click", `#btnSave`, function() {
-            let medicineID = $(this).attr("medicineID");
+            let firstAidKitID = $(this).attr("firstAidKitID");
             
             let validate = validateForm("modal");
             if (validate) {
                 $("#modal").modal("hide");
 
                 let data = getFormData("modal");
-                    data["tableName"] = "medicines";
+                    data["tableName"] = "first_aid_kits";
                     data["feedback"]  = $(`[name="name"]`).val();
                     data["method"]    = "add";
     
-                sweetAlertConfirmation("add", "Medicine", "modal", null, data, true, refreshTableContent);
+                sweetAlertConfirmation("add", "First-aid Kit", "modal", null, data, true, refreshTableContent);
             }
         })
         // ----- END BUTTON SAVE -----
@@ -301,19 +291,19 @@
 
         // ----- BUTTON SAVE -----
         $(document).on("click", `#btnUpdate`, function() {
-            let medicineID = $(this).attr("medicineID");
+            let firstAidKitID = $(this).attr("firstAidKitID");
             
             let validate = validateForm("modal");
             if (validate) {
                 $("#modal").modal("hide");
 
                 let data = getFormData("modal");
-                    data["tableName"]   = "medicines";
+                    data["tableName"]   = "first_aid_kits";
                     data["feedback"]    = $(`[name="name"]`).val();
                     data["method"]      = "update";
-                    data["whereFilter"] = `medicine_id=${medicineID}`;
+                    data["whereFilter"] = `first_aid_kit_id=${firstAidKitID}`;
     
-                sweetAlertConfirmation("update", "Medicine", "modal", null, data, true, refreshTableContent);
+                sweetAlertConfirmation("update", "First-aid Kit", "modal", null, data, true, refreshTableContent);
             }
         })
         // ----- END BUTTON SAVE -----
@@ -321,18 +311,18 @@
 
         // ----- BUTTON DELETE -----
         $(document).on("click", `.btnDelete`, function() {
-            let medicineID = $(this).attr("medicineID");
+            let firstAidKitID = $(this).attr("firstAidKitID");
 
             let data = {
-                tableName: 'medicines',
+                tableName: 'first_aid_kits',
                 tableData: {
                     is_deleted: 1
                 },
-                whereFilter: `medicine_id=${medicineID}`,
+                whereFilter: `first_aid_kit_id=${firstAidKitID}`,
                 feedback:    $(`[name="name"]`).val(),
                 method:      "update"
             }
-            sweetAlertConfirmation("delete", "Medicine", "modal", null, data, true, refreshTableContent);
+            sweetAlertConfirmation("delete", "First-aid Kit", "modal", null, data, true, refreshTableContent);
         })
         // ----- END BUTTON DELETE -----
 

@@ -2,10 +2,10 @@
 
     <div class="row">
         <div class="col-12 grid-margin">
-            <div class="card-header">
-                <h4 class="mb-0">Medicine</h4>
-            </div>
             <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Survey</h4>
+                </div>
                 <div class="card-body" id="pageContent">          
                 </div>
             </div>
@@ -20,19 +20,14 @@
 
     $(document).ready(function() {
 
-        // ----- GLOBAL VARIABLES -----
-        let courseList      = getTableData(`courses WHERE is_deleted = 0`);
-        let patientTypeList = getTableData('patient_type WHERE is_deleted = 0');
-        // ----- END GLOBAL VARIABLES -----
-
 
         // ----- DATATABLES -----
         function initDataTables() {
-            if ($.fn.DataTable.isDataTable("#tableMedicine")) {
-                $("#tableMedicine").DataTable().destroy();
+            if ($.fn.DataTable.isDataTable("#tableSurvey")) {
+                $("#tableSurvey").DataTable().destroy();
             }
             
-            var table = $("#tableMedicine")
+            var table = $("#tableSurvey")
                 .css({ "min-width": "100%" })
                 .removeAttr("width")
                 .DataTable({
@@ -42,97 +37,78 @@
                     sorting:        [],
                     scrollCollapse: true,
                     columnDefs: [
-                        // { targets: "thXs", width: 50  },	
-                        // { targets: "thSm", width: 150 },	
-                        // { targets: "thMd", width: 250 },	
-                        // { targets: "thLg", width: 350 },	
-                        // { targets: "thXl", width: 450 },	
-                        { targets: 0, width: '250px' },
-                        { targets: 1, width: '250px' },
-                        { targets: 2, width: '250px' },
-                        { targets: 3, width: '250px' },
+                        { targets: "thXs", width: 50  },	
+                        { targets: "thSm", width: 150 },	
+                        { targets: "thMd", width: 250 },	
+                        { targets: "thLg", width: 350 },	
+                        { targets: "thXl", width: 450 },	
                     ],
                 });
         }
         // ----- END DATATABLES -----
 
 
-        // ----- MEDICINE TYPE OPTIONS DISPLAY -----
-        function getMedicineTypeOptionDisplay(patientTypeID = 0, isAll = false) {
-            let html = isAll ? `<option value="0">All</option>` : `<option value="" selected>Select patient type</option>`;
-            patientTypeList.map(type => {
-                let {
-                    patient_type_id,
-                    name
-                } = type;
-
-                html += `
-                <option value="${patient_type_id}"
-                    ${patient_type_id == patientTypeID ? "selected" : ""}>${name}</option>`;
-            })
-            return html;
-        }
-        // ----- END MEDICINE TYPE OPTIONS DISPLAY -----
-
-
-        // ----- COURSE OPTIONS DISPLAY -----
-        function getCourseOptionDisplay(courseID = 0) {
-            let html = `<option value="" selected>Select course</option>`;
-            courseList.map(course => {
-                let {
-                    course_id,
-                    name
-                } = course;
-
-                html += `
-                <option value="${course_id}"
-                    ${course_id == courseID ? "selected" : ""}>${name}</option>`;
-            })
-            return html;
-        }
-        // ----- END COURSE OPTIONS DISPLAY -----
-
-
         // ----- TABLE CONTENT -----
         function tableContent() {
 
             let tbodyHTML = '';
-            let data = getTableData(`medicines WHERE is_deleted = 0`);
+            let data = getTableData(
+                `surveys AS s
+                    lEFT JOIN check_ups AS cu USING(check_up_id)
+                    LEFT JOIN services AS s2 ON cu.service_id = s2.service_id
+                    LEFT JOIN patients AS p ON s.patient_id = p.patient_id
+                WHERE s.is_deleted = 0`,
+                `s.*, firstname, middlename, lastname, suffix, s2.name AS service_name`);
             data.map(item => {
                 let {
-                    medicine_id = "",
-                    name        = "",
-                    brand       = "",
-                    quantity    = "",
+                    survey_id    = "",
+                    check_up_id  = "",
+                    patient_id   = "",
+                    firstname    = "",
+                    middlename   = "",
+                    lastname     = "",
+                    suffix       = "",
+                    created_at   = "",
+                    service_name = "",
+                    status       = "",
                 } = item;
+
+                let fullname = `${firstname} ${middlename} ${lastname} ${suffix}`;
+                let statusStyle = status == 1 ? `
+                <span class="badge badge-success">Done</span>` : `
+                <span class="badge badge-warning">Pending</span>`;
 
                 tbodyHTML += `
                 <tr>
-                    <td>${name}</td>
-                    <td>${brand}</td>
-                    <td>${quantity}</td>
+                    <td>${moment(created_at).format("MMMM DD, YYYY")}</td>
+                    <td>${fullname}</td>
+                    <td>${service_name}</td>
+                    <td>${statusStyle}</td>
                     <td>
                         <div class="text-center">
-                            <button class="btn btn-outline-info btnEdit"
-                                medicineID="${medicine_id}"><i class="fas fa-pencil-alt"></i></button>
+                            <a class="btn btn-primary text-white btnSurvey"
+                                href="survey/take?id=${survey_id}"
+                                target="_blank"
+                                surveyID="${survey_id}"><i class="fas fa-paper-plane"></i> Take Survey</a>
                             <button class="btn btn-outline-danger btnDelete"
-                                medicineID="${medicine_id}"><i class="fas fa-trash-alt"></i></button>
+                                surveyID="${survey_id}"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </td>
                 </tr>`;
             });
 
             let html = `
-            <table class="table table-bordered" id="tableMedicine">
+            <table class="table table-bordered" id="tableSurvey">
                 <thead>
                     <tr class="text-center">
-                        <th>Name</th>
-                        <th>Brand</th>
-                        <th>Quantity</th>
+                        <th>Check-up Date</th>
+                        <th>Full Name</th>
+                        <th>Service</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="tableMedicineTbody">
+                <tbody id="tableSurveyTbody">
                     ${tbodyHTML}
                 </tbody>
             </table>`;
@@ -165,8 +141,6 @@
                     <div class="row mb-4">
                         <div class="col-md-4 col-sm-12"></div>
                         <div class="col-md-8 col-sm-12 text-right">
-                            <button class="btn btn-primary"
-                                id="btnAdd"><i class="fas fa-plus"></i> Add Medicine</button>
                         </div>
                     </div>
                 </div>
@@ -185,19 +159,19 @@
         // ----- FORM CONTENT -----
         function formContent(data = false, isUpdate = false) {
             let {
-                medicine_id = "",
-                name        = "",
-                brand       = "",
-                quantity    = "",
+                survey_id = "",
+                name      = "",
+                brand     = "",
+                quantity  = "",
             } = data && data[0];
 
             let buttonSaveUpdate = !isUpdate ? `
             <button class="btn btn-primary" 
                 id="btnSave"
-                medicineID="${medicine_id}">Save</button>` : `
+                surveyID="${survey_id}">Save</button>` : `
             <button class="btn btn-primary" 
                 id="btnUpdate"
-                medicineID="${medicine_id}">Update</button>`;
+                surveyID="${survey_id}">Update</button>`;
 
             let html = `
             <div class="row p-3">
@@ -265,8 +239,8 @@
 
         // ----- BUTTON EDIT -----
         $(document).on("click", ".btnEdit", function() {
-            let medicineID = $(this).attr("medicineID");
-            let data = getTableData(`medicines WHERE medicine_id = ${medicineID}`);
+            let surveyID = $(this).attr("surveyID");
+            let data = getTableData(`medicines WHERE survey_id = ${surveyID}`);
 
             $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
             $("#modal_content").html(preloader);
@@ -284,7 +258,7 @@
 
         // ----- BUTTON SAVE -----
         $(document).on("click", `#btnSave`, function() {
-            let medicineID = $(this).attr("medicineID");
+            let surveyID = $(this).attr("surveyID");
             
             let validate = validateForm("modal");
             if (validate) {
@@ -303,7 +277,7 @@
 
         // ----- BUTTON SAVE -----
         $(document).on("click", `#btnUpdate`, function() {
-            let medicineID = $(this).attr("medicineID");
+            let surveyID = $(this).attr("surveyID");
             
             let validate = validateForm("modal");
             if (validate) {
@@ -313,7 +287,7 @@
                     data["tableName"]   = "medicines";
                     data["feedback"]    = $(`[name="name"]`).val();
                     data["method"]      = "update";
-                    data["whereFilter"] = `medicine_id=${medicineID}`;
+                    data["whereFilter"] = `survey_id=${surveyID}`;
     
                 sweetAlertConfirmation("update", "Medicine", "modal", null, data, true, refreshTableContent);
             }
@@ -323,14 +297,14 @@
 
         // ----- BUTTON DELETE -----
         $(document).on("click", `.btnDelete`, function() {
-            let medicineID = $(this).attr("medicineID");
+            let surveyID = $(this).attr("surveyID");
 
             let data = {
                 tableName: 'medicines',
                 tableData: {
                     is_deleted: 1
                 },
-                whereFilter: `medicine_id=${medicineID}`,
+                whereFilter: `survey_id=${surveyID}`,
                 feedback:    $(`[name="name"]`).val(),
                 method:      "update"
             }

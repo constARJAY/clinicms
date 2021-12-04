@@ -121,7 +121,8 @@
                     <td>${age}</td>
                     <td>${gender}</td>
                     <td>${c_name || "-"}</td>
-                    <td>${year || ""} ${section ? " | "+section : ""}</td>
+                    <td>${year || "-"}}</td>
+                    <td>${section || "-"}</td>
                     <td>
                         <div class="text-center">
                             <button class="btn btn-outline-info btnEdit"
@@ -144,7 +145,8 @@
                         <th class="thSm">Age</th>
                         <th class="thSm">Gender</th>
                         <th class="thMd">Course</th>
-                        <th class="thSm">Year & Section</th>
+                        <th class="thSm">Year</th>
+                        <th class="thSm">Section</th>
                         <th class="thSm">Action</th>
                     </tr>
                 </thead>

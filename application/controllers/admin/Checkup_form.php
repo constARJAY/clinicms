@@ -73,19 +73,12 @@ class Checkup_form extends CI_Controller {
                 }
 
                 $insertTreatmentMedicine = $this->checkupform->insertTreatmentMedicine($treatmentData, $medicineData);
+                $insertSurvey = $this->checkupform->insertSurvey($check_up_id, $patient_id);
             }
         }
 
         echo json_encode($insertCheckupForm);
     }
-
-    // public function add()
-    // {
-    //     $data['title'] = "Add Check-up Form";
-    //     $this->load->view("admin/template/header", $data);
-    //     $this->load->view("admin/checkup_form/add");
-    //     $this->load->view("admin/template/footer");
-    // }
 
 }
 

@@ -67,5 +67,16 @@ class CheckupForm_model extends CI_Model {
         }
     }
 
+    public function insertSurvey($checkUpID, $patientID)
+    {
+        $data = [
+            "check_up_id" => $checkUpID,
+            "patient_id"  => $patientID,
+            "status"      => 0,
+        ];
+        $query = $this->db->insert("surveys", $data);
+        return $query ? true : false;
+    }
+
 }
 

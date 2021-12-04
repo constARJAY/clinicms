@@ -20,17 +20,31 @@
     $(document).ready(function() {
 
         // ----- GLOBAL VARIABLES -----
-        let serviceList = getTableData(`services WHERE is_deleted = 0`);
+        let serviceList     = getTableData(`services WHERE is_deleted = 0`);
+        let patientTypeList = getTableData(`patient_type WHERE is_deleted = 0`);
+        let checkupList     = getTableData(
+            `check_ups AS cu
+                LEFT JOIN patients AS p USING(patient_id)
+                LEFT JOIN courses AS c USING(course_id)
+            WHERE cu.is_deleted = 0`,
+            `cu.*, p.firstname AS p_firstname, p.middlename AS p_middlename, p.lastname AS p_lastname, p.suffix AS p_suffix, p.gender AS p_gender, p.age AS p_age, p.year AS p_year, p.section AS p_section, c.name AS c_name, p.patient_type_id AS p_patient_type_id`);
+        let medicineTransactionList = getTableData(
+            `medicine_transactions AS mt
+                LEFT JOIN check_ups AS cu USING(check_up_id)
+                LEFT JOIN medicines AS m USING(medicine_id)
+                LEFT JOIN patients AS p ON cu.patient_id = p.patient_id`,
+            `mt.*, m.name AS m_name, m.brand AS m_brand, p.firstname, p.middlename, p.lastname, p.suffix, p.patient_type_id AS p_patient_type_id`
+        );
         // ----- END GLOBAL VARIABLES -----
 
 
         // ----- DATATABLES -----
         function initDataTables() {
-            if ($.fn.DataTable.isDataTable("#tableFirstAidKit")) {
-                $("#tableFirstAidKit").DataTable().destroy();
+            if ($.fn.DataTable.isDataTable("#tableMedical")) {
+                $("#tableMedical").DataTable().destroy();
             }
             
-            var table = $("#tableFirstAidKit")
+            var table = $("#tableMedical")
                 .css({ "min-width": "100%" })
                 .removeAttr("width")
                 .DataTable({
@@ -52,75 +66,136 @@
 
 
         // ----- TABLE CONTENT -----
-        function tableContent(serviceID = 0) {
-
+        function tableContent(serviceID = 0, patientTypeID = 0) {
             let html = '';
+            if (serviceID == 1 || serviceID == 2) {
+                let tbodyHTML = '';
+                let data = checkupList.filter(check => check.service_id == serviceID && (patientTypeID == 0 || check.p_patient_type_id == patientTypeID));
+                if (data && data.length > 0) {
+                    data.map(check => {
+                        let {
+                            check_up_id           = "",
+                            clinic_appointment_id = "",
+                            service_id            = "",
+                            patient_id            = "",
+                            temperature           = "",
+                            pulse_rate            = "",
+                            respiratory_rate      = "",
+                            blood_pressure        = "",
+                            random_blood_sugar    = "",
+                            others                = "",
+                            recommendation        = "",
+                            created_at            = "",
+                            p_firstname           = "",
+                            p_middlename          = "",
+                            p_lastname            = "",
+                            p_suffix              = "",
+                            p_gender              = "",
+                            p_age                 = "",
+                            p_year                = "",
+                            p_section             = "",
+                            c_name                = "",
+                        } = check;
+    
+                        let fullname = `${p_firstname} ${p_middlename} ${p_lastname} ${p_suffix}`;
+    
+                        tbodyHTML += `
+                        <tr>
+                            <td>${fullname}</td>
+                            <td>${p_gender}</td>
+                            <td>${p_age}</td>
+                            <td>${c_name || "-"}</td>
+                            <td>${p_year}</td>
+                            <td>${p_section}</td>
+                            <td>${moment(created_at).format("MMMM DD, YYYY")}</td>
+                        </tr>`;
+    
+                    })
 
-            if (serviceID == 0) {
+                    html = `
+                    <table class="table table-bordered" id="tableMedical">
+                        <thead>
+                            <tr class="text-center">
+                                <th class="thMd">Full Name</th>
+                                <th class="thSm">Gender</th>
+                                <th class="thSm">Age</th>
+                                <th class="thSm">Course</th>
+                                <th class="thSm">Year</th>
+                                <th class="thSm">Section</th>
+                                <th class="thSm">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableMedicalTbody">
+                            ${tbodyHTML}
+                        </tbody>
+                    </table>`;
+                } else {
+                    html = `
+                    <div class="w-100 py-5 text-center">
+                        <img src="${base_url}assets/images/modal/nodata.svg"
+                            width="200" height="200" alt="Select Service">
+                        <h4 class="mt-3">No data found</h4>
+                    </div>`;
+                }
+            } else if (serviceID == 3) {
+                let tbodyHTML = '';
+                let data = medicineTransactionList.filter(medtran => patientTypeID == 0 || medtran.p_patient_type_id == patientTypeID);
+                if (data && data.length > 0) {
+                    data.map(check => {
+                        let {
+                            medicine_transaction_id = "",
+                            check_up_id = "",
+                            quantity    = "",
+                            m_name      = "",
+                            m_brand     = "",
+                            firstname   = "",
+                            middlename  = "",
+                            lastname    = "",
+                            suffix      = "",
+                            created_at  = "",
+                        } = check;
+    
+                        let fullname = `${firstname} ${middlename} ${lastname} ${suffix}`;
+    
+                        tbodyHTML += `
+                        <tr>
+                            <td>${fullname}</td>
+                            <td>${m_name}</td>
+                            <td>${quantity}</td>
+                            <td>${moment(created_at).format("MMMM DD, YYYY")}</td>
+                        </tr>`;
+                    })
+
+                    html = `
+                    <table class="table table-bordered" id="tableMedical">
+                        <thead>
+                            <tr class="text-center">
+                                <th class="thMd">Full Name</th>
+                                <th class="thSm">Medicine</th>
+                                <th class="thSm">Quantity</th>
+                                <th class="thSm">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableMedicalTbody">
+                            ${tbodyHTML}
+                        </tbody>
+                    </table>`;
+                } else {
+                    html = `
+                    <div class="w-100 py-5 text-center">
+                        <img src="${base_url}assets/images/modal/nodata.svg"
+                            width="200" height="200" alt="Select Service">
+                        <h4 class="mt-3">No data found</h4>
+                    </div>`;
+                }
+            } else {
                 html = `
                 <div class="w-100 py-5 text-center">
                     <img src="${base_url}assets/images/modal/select.svg"
                         width="200" height="200" alt="Select Service">
-                    <h4>Please select service</h4>
+                    <h4 class="mt-3">Please select service</h4>
                 </div>`;
-            } else {
-                let tbodyHTML = '';
-                let data = getTableData(`
-                    first_aid_kits AS fak
-                        LEFT JOIN measurements AS m USING(measurement_id) WHERE fak.is_deleted = 0`,
-                    `fak.*, m.name AS m_name`);
-                data.map(item => {
-                    let {
-                        first_aid_kit_id = "",
-                        name             = "",
-                        quantity         = "",
-                        m_name           = "",
-                    } = item;
-    
-                    let maximumValue = 500;
-                    let ariaValue  = quantity > maximumValue ? maximumValue : quantity;
-                    let percentage = ariaValue / maximumValue * 100;
-                        percentage = percentage.toFixed(1);
-    
-                    tbodyHTML += `
-                    <tr>
-                        <td>
-                            <div class="progress progress-lg mt-2">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: ${percentage}%" aria-valuenow="${ariaValue}" aria-valuemin="0" aria-valuemax="${maximumValue}">${percentage}%</div>
-                            </div>
-                        </td>
-                        <td>${name}</td>
-                        <td>${m_name}</td>
-                        <td>${quantity}</td>
-                        <td>
-                            <div class="text-center">
-                                <button class="btn btn-outline-info btnEdit"
-                                    firstAidKitID="${first_aid_kit_id}"><i class="fas fa-pencil-alt"></i></button>
-                                <button class="btn btn-outline-danger btnDelete"
-                                    firstAidKitID="${first_aid_kit_id}"><i class="fas fa-trash-alt"></i></button>
-                            </div>
-                        </td>
-                    </tr>`;
-                });
-    
-                html = `
-                <table class="table table-bordered" id="tableFirstAidKit">
-                    <thead>
-                        <tr class="text-center">
-                            <th class="thMd">Percentage</th>
-                            <th class="thSm">Equipment Name</th>
-                            <th class="thSm">Measurement</th>
-                            <th class="thXs">Quantity</th>
-                            <th class="thSm">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableFirstAidKitTbody">
-                        ${tbodyHTML}
-                    </tbody>
-                </table>`;
             }
-
-
             return html;
         }
         // ----- END TABLE CONTENT -----
@@ -129,9 +204,10 @@
         // ----- REFRESH TABLE CONTENT -----
         function refreshTableContent() {
             $("#tableContent").html(preloader);
-            
+            let serviceID     = $(`[name="filter_service"]`).val();
+            let patientTypeID = $(`[name="filter_patient_type"]`).val();
             setTimeout(() => {
-                let content = tableContent();
+                let content = tableContent(serviceID, patientTypeID);
                 $("#tableContent").html(content);
                 initDataTables();
             }, 100);
@@ -155,6 +231,22 @@
         // ----- END SERVICE OPTION DISPLAY -----
 
 
+        // ----- PATIENT TYPE OPTION DISPLAY -----
+        function getPatientTypeOptionDisplay() {
+            let html = `<option value="0" selected>All</option>`;
+            patientTypeList.map(patient => {
+                let {
+                    patient_type_id = "",
+                    name            = "",
+                } = patient;
+
+                html += `<option value="${patient_type_id}">${name}</option>`
+            })
+            return html;
+        }
+        // ----- END PATIENT TYPE OPTION DISPLAY -----
+
+
         // ----- PAGE CONTENT -----
         function pageContent() {
             $("#pageContent").html(preloader);
@@ -172,6 +264,15 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label>Patient Type</label>
+                                <select class="form-control" 
+                                    name="filter_patient_type">
+                                    ${getPatientTypeOptionDisplay()}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-12" id="tableContent">${tableContent(0)}</div>
@@ -184,24 +285,6 @@
         }
         pageContent();
         // ----- END PAGE CONTENT -----
-
-
-        // ----- MEASUREMENT OPTIONS DISPLAY -----
-        function getMeasurementOptionDisplay(measurementID = 0) {
-            let html = `<option value="" selected>Select measurement</option>`;
-            measurementList.map(measurement => {
-                let {
-                    measurement_id,
-                    name
-                } = measurement;
-
-                html += `
-                <option value="${measurement_id}"
-                    ${measurement_id == measurementID ? "selected" : ""}>${name}</option>`;
-            })
-            return html;
-        }
-        // ----- END MEASUREMENT OPTIONS DISPLAY -----
 
 
         // ----- FORM CONTENT -----
@@ -271,92 +354,11 @@
         // ----- END FORM CONTENT -----
 
 
-        // ----- BUTTON ADD -----
-        $(document).on("click", "#btnAdd", function() {
-            let html = formContent();
-            $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
-            $("#modal_content").html(html);
-            $("#modal .page-title").text("ADD FIRST-AID KIT");
-            $("#modal").modal('show');
-            generateInputsID("#modal");
-        });
-        // ----- END BUTTON ADD -----
-
-
-        // ----- BUTTON EDIT -----
-        $(document).on("click", ".btnEdit", function() {
-            let firstAidKitID = $(this).attr("firstAidKitID");
-            let data = getTableData(`first_aid_kits WHERE first_aid_kit_id = ${firstAidKitID}`);
-
-            $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
-            $("#modal_content").html(preloader);
-            $("#modal .page-title").text("EDIT FIRST-AID KIT");
-            $("#modal").modal('show');
-
-            setTimeout(() => {
-                let html = formContent(data, true);
-                $("#modal_content").html(html);
-                generateInputsID("#modal");
-            }, 100);
-        });
-        // ----- END BUTTON EDIT -----
-
-
-        // ----- BUTTON SAVE -----
-        $(document).on("click", `#btnSave`, function() {
-            let firstAidKitID = $(this).attr("firstAidKitID");
-            
-            let validate = validateForm("modal");
-            if (validate) {
-                $("#modal").modal("hide");
-
-                let data = getFormData("modal");
-                    data["tableName"] = "first_aid_kits";
-                    data["feedback"]  = $(`[name="name"]`).val();
-                    data["method"]    = "add";
-    
-                sweetAlertConfirmation("add", "First-aid Kit", "modal", null, data, true, refreshTableContent);
-            }
+        // ----- SELECT SERVICE -----
+        $(document).on("change", `[name="filter_service"], [name="filter_patient_type"]`, function() {
+            refreshTableContent();
         })
-        // ----- END BUTTON SAVE -----
-
-
-        // ----- BUTTON SAVE -----
-        $(document).on("click", `#btnUpdate`, function() {
-            let firstAidKitID = $(this).attr("firstAidKitID");
-            
-            let validate = validateForm("modal");
-            if (validate) {
-                $("#modal").modal("hide");
-
-                let data = getFormData("modal");
-                    data["tableName"]   = "first_aid_kits";
-                    data["feedback"]    = $(`[name="name"]`).val();
-                    data["method"]      = "update";
-                    data["whereFilter"] = `first_aid_kit_id=${firstAidKitID}`;
-    
-                sweetAlertConfirmation("update", "First-aid Kit", "modal", null, data, true, refreshTableContent);
-            }
-        })
-        // ----- END BUTTON SAVE -----
-        
-
-        // ----- BUTTON DELETE -----
-        $(document).on("click", `.btnDelete`, function() {
-            let firstAidKitID = $(this).attr("firstAidKitID");
-
-            let data = {
-                tableName: 'first_aid_kits',
-                tableData: {
-                    is_deleted: 1
-                },
-                whereFilter: `first_aid_kit_id=${firstAidKitID}`,
-                feedback:    $(`[name="name"]`).val(),
-                method:      "update"
-            }
-            sweetAlertConfirmation("delete", "First-aid Kit", "modal", null, data, true, refreshTableContent);
-        })
-        // ----- END BUTTON DELETE -----
+        // ----- END SELECT SERVICE -----
 
     })
 
