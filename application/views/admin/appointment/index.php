@@ -18,7 +18,8 @@
     $(document).ready(function() {
 
         // ----- GLOBAL VARIABLES -----
-        let measurementList = getTableData(`clinic_appointments WHERE is_deleted = 0`);
+        let patientList = getTableData(`patients WHERE is_deleted = 0`);
+        let serviceList = getTableData(`services WHERE is_deleted = 0`);
         // ----- END GLOBAL VARIABLES -----
 
 
@@ -55,27 +56,42 @@
             let tbodyHTML = '';
             let data = getTableData(`
                 clinic_appointments AS ca
-                    LEFT JOIN patients AS p USING(patient_id) WHERE ca.is_deleted = 0`,
-                `ca.*, p.firstname AS p_firstname, p.middlename AS p_middlename, p.lastname AS p_lastname, p.suffix AS p_suffix`);
+                    LEFT JOIN patients AS p USING(patient_id) 
+                    LEFT JOIN services AS s USING(service_id) 
+                WHERE ca.is_deleted = 0`,
+                `ca.*, p.firstname AS p_firstname, p.middlename AS p_middlename, p.lastname AS p_lastname, p.suffix AS p_suffix, s.name AS s_name`);
             data.map((item, index) => {
                 let {
                     clinic_appointment_id = "",
                     patient_id            = "",
                     purpose               = "",
-                    is_confirmed          = "",
-                    date_appoint          = "",
+                    date_appointment      = "",
+                    is_done               = "",
                     p_firstname           = "",
                     p_middlename          = "",
                     p_lastname            = "",
                     p_suffix              = "",
+                    s_name                = "",
                 } = item;
+
+                const statusStyle = (is_done = 0) => {
+                    if (is_done == 0) {
+                        return `<div class="badge badge-warning">Pending</div>`;
+                    } else if (is_done == 1) {
+                        return `<div class="badge badge-success">Done</div>`;
+                    } else {
+                        return `<div class="badge badge-danger">Cancelled</div>`;
+                    }
+                }
 
                 tbodyHTML += `
                 <tr>
                     <td>${index+1}</td>
                     <td>${p_firstname} ${p_middlename} ${p_lastname} ${p_suffix}</td>
+                    <td>${s_name}</td>
+                    <td>${date_appointment ? moment(date_appointment).format("MMMM DD, YYYY") : "-"}</td>
                     <td>${purpose}</td>
-                    <td>${is_confirmed}</td>
+                    <td>${statusStyle(is_done)}</td>
                     <td>
                         <div class="text-center">
                             <button class="btn btn-outline-info btnEdit"
@@ -93,6 +109,8 @@
                     <tr class="text-center">
                         <th class="thXs">#</th>
                         <th class="thSm">Full Name</th>
+                        <th class="thSm">Appointment Type</th>
+                        <th class="thSm">Date Appointment</th>
                         <th class="thMd">Purpose</th>
                         <th class="thXs">Status</th>
                         <th class="thSm">Action</th>
@@ -148,32 +166,56 @@
         // ----- END PAGE CONTENT -----
 
 
-        // ----- MEASUREMENT OPTIONS DISPLAY -----
-        function getMeasurementOptionDisplay(measurementID = 0) {
-            let html = `<option value="" selected>Select measurement</option>`;
-            measurementList.map(measurement => {
+        // ----- PATIENT OPTION DISPLAY -----
+        function getPatientOptionDisplay(patientID = 0) {
+            let html = `<option value="" selected>Select patient</option>`;
+            patientList.map(patient => {
                 let {
-                    measurement_id,
-                    name
-                } = measurement;
+                    patient_id = "",
+                    firstname  = "",
+                    middlename = "",
+                    lastname   = "",
+                    suffix     = "",
+                } = patient;
+
+                let fullname = `${firstname} ${middlename} ${lastname} ${suffix}`;
 
                 html += `
-                <option value="${measurement_id}"
-                    ${measurement_id == measurementID ? "selected" : ""}>${name}</option>`;
+                <option value="${patient_id}"
+                    ${patient_id == patientID ? "selected" : ""}>${fullname}</option>`;
             })
             return html;
         }
-        // ----- END MEASUREMENT OPTIONS DISPLAY -----
+        // ----- END PATIENT OPTION DISPLAY -----
+
+
+        // ----- SERVICE OPTION DISPLAY -----
+        function getServiceOptionDisplay(serviceID = 0) {
+            let html = `<option value="" selected>Select service</option>`;
+            serviceList.map(service => {
+                let {
+                    service_id = "",
+                    name       = "",
+                } = service;
+
+                html += `
+                <option value="${service_id}"
+                    ${service_id == serviceID ? "selected" : ""}>${name}</option>`;
+            })
+            return html;
+        }
+        // ----- END SERVICE OPTION DISPLAY -----
 
 
         // ----- FORM CONTENT -----
         function formContent(data = false, isUpdate = false) {
             let {
                 clinic_appointment_id = "",
-                measurement_id    = "",
-                name              = "",
-                quantity          = "",
-                condition         = "",
+                patient_id            = "",
+                service_id            = "",
+                purpose               = "",
+                is_done               = "",
+                date_appointment      = "",
             } = data && data[0];
 
             let buttonSaveUpdate = !isUpdate ? `
@@ -188,51 +230,59 @@
             <div class="row p-3">
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
-                        <label>Equipment Name <code>*</code></label>
-                        <input type="text" 
-                            class="form-control validate"
-                            name="name"
-                            minlength="2"
-                            maxlength="20"
-                            value="${name}"
-                            required>
-                        <div class="d-block invalid-feedback"></div>
-                    </div>
-                </div>
-                <div class="col-md-12 col-sm-12">
-                    <div class="form-group">
-                        <label>Measurement <code>*</code></label>
+                        <label>Patient <code>*</code></label>
                         <select class="form-control validate"
-                            name="measurement_id"
+                            name="patient_id"
                             required>
-                            ${getMeasurementOptionDisplay(measurement_id)}    
+                            ${getPatientOptionDisplay(patient_id)}
                         </select>
                         <div class="d-block invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
-                        <label>Quantity <code>*</code></label>
-                        <input type="number" 
-                            class="form-control validate"
-                            name="quantity"
-                            minlength="2"
-                            maxlength="20"
-                            value="${quantity}"
+                        <label>Service Type <code>*</code></label>
+                        <select class="form-control validate"
+                            name="service_id"
                             required>
+                            ${getServiceOptionDisplay(service_id)}
+                        </select>
                         <div class="d-block invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
-                        <label>Condition <code>*</code></label>
+                        <label>Date Appointment</label>
+                        <input type="button"
+                            class="form-control validate daterange text-left"
+                            name="date_appointment"
+                            value="${date_appointment ? moment(date_appointment).format("MMMM DD, YYYY") : ""}">
+                        <div class="d-block invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <label>Purpose <code>*</code></label>
                         <textarea class="form-control validate"
-                            name="condition"
+                            name="purpose"
                             minlength="2"
                             maxlength="200"
                             rows="3"
                             style="resize: none;"
-                            required>${condition}</textarea>
+                            required>${purpose}</textarea>
+                        <div class="d-block invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control validate"
+                            name="is_done"
+                            required>
+                            <option value="0" selected>Pending</option>
+                            <option value="1" ${is_done == 1 ? "selected" : ""}>Done</option>
+                            <option value="2" ${is_done == 2 ? "selected" : ""}>Cancelled</option>
+                        </select>
                         <div class="d-block invalid-feedback"></div>
                     </div>
                 </div>
@@ -252,9 +302,10 @@
             let html = formContent();
             $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
             $("#modal_content").html(html);
-            $("#modal .page-title").text("ADD CARE EQUIPMENT");
+            $("#modal .page-title").text("ADD APPOINTENT");
             $("#modal").modal('show');
             generateInputsID("#modal");
+            initDateRangePicker();
         });
         // ----- END BUTTON ADD -----
 
@@ -266,13 +317,14 @@
 
             $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
             $("#modal_content").html(preloader);
-            $("#modal .page-title").text("EDIT CARE EQUIPMENT");
+            $("#modal .page-title").text("EDIT APPOINTENT");
             $("#modal").modal('show');
 
             setTimeout(() => {
                 let html = formContent(data, true);
                 $("#modal_content").html(html);
                 generateInputsID("#modal");
+                initDateRangePicker();
             }, 100);
         });
         // ----- END BUTTON EDIT -----
@@ -288,7 +340,7 @@
 
                 let data = getFormData("modal");
                     data["tableName"] = "clinic_appointments";
-                    data["feedback"]  = $(`[name="name"]`).val();
+                    data["feedback"]  = "Appointment";
                     data["method"]    = "add";
     
                 sweetAlertConfirmation("add", "Appointment", "modal", null, data, true, refreshTableContent);
@@ -307,7 +359,7 @@
 
                 let data = getFormData("modal");
                     data["tableName"]   = "clinic_appointments";
-                    data["feedback"]    = $(`[name="name"]`).val();
+                    data["feedback"]    = "Appointment";
                     data["method"]      = "update";
                     data["whereFilter"] = `clinic_appointment_id=${clinicAppointmentID}`;
     
@@ -327,7 +379,7 @@
                     is_deleted: 1
                 },
                 whereFilter: `clinic_appointment_id=${clinicAppointmentID}`,
-                feedback:    $(`[name="name"]`).val(),
+                feedback:    "Appointment",
                 method:      "update"
             }
             sweetAlertConfirmation("delete", "Appointment", "modal", null, data, true, refreshTableContent);

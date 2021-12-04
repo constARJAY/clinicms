@@ -17,6 +17,55 @@ const closeModals = () => {
 // ----- END CLOSE MODALS -----
 
 
+// ---- GET DOM ELEMENT -----
+const getElement = (element = null, defaultElement = null) => {
+	let elem = element
+		? element.indexOf(".") != "-1"
+			? element
+			: element.indexOf("#") != "-1"
+			? element
+			: "#" + element
+		: defaultElement;
+	return elem;
+};
+// ---- END GET DOM ELEMENT -----
+
+
+// ----- INIT DATERANGE -----
+function initDateRangePicker(element = null, otherOption = false) {
+	let elem = getElement(element, ".daterange");
+	let options = otherOption
+		? otherOption
+		: {
+				autoUpdateInput: false,
+				singleDatePicker: true,
+				showDropdowns: true,
+				autoApply: true,
+				locale: {
+					format: "MMMM DD, YYYY",
+				},
+				// maxDate: moment(new Date).format("MMMM DD, YYYY"),
+		  };
+	$(elem).daterangepicker(options, function (data) {
+		if (data) {
+			const validated = $(elem).hasClass("validated");
+			let invalidFeedback =
+				$(elem).parent().find(".invalid-feedback").length > 0
+					? $(elem).parent().find(".invalid-feedback")
+					: $(elem).parent().parent().find(".invalid-feedback").length > 0
+					? $(elem).parent().parent().find(".invalid-feedback")
+					: $(elem).parent().parent().parent().find(".invalid-feedback");
+			validated
+				? $(elem).removeClass("is-invalid").addClass("is-valid")
+				: $(elem).removeClass("is-invalid").removeClass("is-valid");
+			invalidFeedback.text("");
+			$(elem).val(moment(data).format("MMMM DD, YYYY"));
+		}
+	});
+};
+// ----- END INIT DATERANGE -----
+
+
 // ----- GENERATE ID -----
 function generateInputsID(elementID = "") {
     if (elementID) {

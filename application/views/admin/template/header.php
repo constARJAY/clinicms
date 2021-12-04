@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/vendors/flag-icon-css/css/flag-icon.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/vendors/font-awesome/css/font-awesome.min.css') ?>"/>
     <link rel="stylesheet" href="<?= base_url('assets/vendors/jquery-toast-plugin/jquery.toast.min.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/daterangepicker.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/vendors/fullcalendar/fullcalendar.min.css') ?>">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -168,14 +170,13 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#dental-menu" aria-expanded="false" aria-controls="dental-menu">
-                            <i class="fas fa-tooth"></i>
-                            <span class="menu-title ml-3"> Dental</span>
+                            <i class="fas fa-book-open"></i>
+                            <span class="menu-title ml-3"> Forms</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="dental-menu">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/checkup_form') ?>">Check-up Form</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/checkup_records') ?>">Check-up Records</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/checkup_form') ?>">Check-up</a></li>
                             <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/dental_certificate') ?>">Dental Certificate</a></li>
                         </ul>
                         </div>
@@ -194,25 +195,25 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../widgets/widgets.html">
+                        <a class="nav-link" href="<?= base_url('admin/record') ?>">
                         <i class="fas fa-book-medical"></i>
                         <span class="menu-title ml-3"> Records</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../widgets/widgets.html">
+                        <a class="nav-link" href="<?= base_url('admin/appointment') ?>">
+                        <i class="fas fa-calendar-check"></i>
+                        <span class="menu-title ml-3"> Appointment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('admin/calendar') ?>">
                         <i class="fas fa-calendar"></i>
                         <span class="menu-title ml-3"> Calendar</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= base_url('admin/appointment') ?>">
-                        <i class="fas fa-calendar"></i>
-                        <span class="menu-title ml-3"> Appointment</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../widgets/widgets.html">
+                        <a class="nav-link" href="<?= base_url('admin/announcement') ?>">
                         <i class="fas fa-bullhorn"></i>
                         <span class="menu-title ml-3"> Announcement</span>
                         </a>

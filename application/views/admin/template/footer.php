@@ -55,6 +55,9 @@
     <script src="<?= base_url('assets/vendors/jquery-toast-plugin/jquery.toast.min.js') ?>"></script>
     <script src="<?= base_url('assets/js/toastDemo.js') ?>"></script>
     <script src="<?= base_url('assets/js/desktop-notification.js') ?>"></script>
+    <script src="<?= base_url('assets/js/moment.min.js') ?>"></script>
+    <script src="<?= base_url('assets/js/daterangepicker.js') ?>"></script>
+    <script src="<?= base_url('assets/vendors/fullcalendar/fullcalendar.min.js') ?>"></script>
     <!-- endinject -->
 
     <!-- DataTables -->
