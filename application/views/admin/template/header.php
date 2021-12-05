@@ -71,7 +71,7 @@
                     <span class="mdi mdi-menu"></span>
                 </button>
                 <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-toggle="dropdown">
                             <i class="mdi mdi-bell-outline mx-0"></i>
                             <span class="count"></span>
@@ -118,16 +118,12 @@
                             </div>
                         </a>
                         </div>
-                    </li>
+                    </li> -->
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
                         <img src="<?= base_url('assets/uploads/profile/default.jpg') ?>" alt="profile"/>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                        <!-- <a class="dropdown-item">
-                            <i class="mdi mdi-settings "></i>
-                            Settings
-                        </a> -->
                         <a class="dropdown-item"
                             href="<?= base_url('login/logout') ?>">
                             <i class="mdi mdi-logout"></i>

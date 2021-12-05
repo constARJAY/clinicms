@@ -253,10 +253,10 @@
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label>Date Appointment</label>
-                        <input type="button"
-                            class="form-control validate daterange text-left"
+                        <input type="date"
+                            class="form-control validate"
                             name="date_appointment"
-                            value="${date_appointment ? moment(date_appointment).format("MMMM DD, YYYY") : ""}">
+                            value="${date_appointment}">
                         <div class="d-block invalid-feedback"></div>
                     </div>
                 </div>

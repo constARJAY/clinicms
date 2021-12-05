@@ -41,8 +41,8 @@
 
 
         // ----- PIE CHART -----
-        function pieChart(patientType = []) {
-            if ($("#pieChart").length && patientType.length) {
+        function patientTypePieChart(patientType = []) {
+            if ($("#patientTypePieChart").length && patientType.length) {
 
                 let data   = patientType.map(p => +p.count);
                 let labels = patientType.map(p => p.name);
@@ -78,8 +78,8 @@
                     }
                 };
 
-                var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-                var pieChart = new Chart(pieChartCanvas, {
+                var patientTypePieChartCanvas = $("#patientTypePieChart").get(0).getContext("2d");
+                var patientTypePieChart = new Chart(patientTypePieChartCanvas, {
                     type: 'pie',
                     data: doughnutPieData,
                     options: doughnutPieOptions
@@ -89,9 +89,156 @@
         // ----- END PIE CHART -----
 
 
-        // ----- BAR CHART -----
-        function barChart(medicine = []) {
-            if ($("#barChart").length && medicine.length) {
+        // ----- CUSTOMER SATISFACTORY BAR CHART -----
+        function customerSatisfactoryBarChart(customerSatisfactory = []) {
+            if ($("#customerSatisfactoryBarChart").length) {
+                var options = {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                        },
+                        elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+
+                };
+
+                let {
+                    q1, q2, q3, q4, q5, q6, q7, q8, q9, q10
+                } = customerSatisfactory;
+
+                let labels  = [
+                    'Question 1',
+                    'Question 2',
+                    'Question 3',
+                    'Question 4',
+                    'Question 5',
+                    'Question 6',
+                    'Question 7',
+                    'Question 8',
+                    'Question 9',
+                    'Question 10',
+                ];
+                let barData = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10];
+
+                var data = {
+                    labels,
+                    datasets: [{
+                        label: 'Total Ratings',
+                        data: barData,
+                        backgroundColor: [
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 159, 64, 1)',
+                        ],
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                };
+
+                var customerSatisfactoryBarChartCanvas = $("#customerSatisfactoryBarChart").get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                var customerSatisfactoryBarChart = new Chart(customerSatisfactoryBarChartCanvas, {
+                    type: 'bar',
+                    data: data,
+                    options: options
+                });
+            }
+        }
+        // ----- END CUSTOMER SATISFACTORY BAR CHART -----
+
+
+        // ----- MONTHLY SURVEY AREA CHART -----
+        function monthlySurveyAreaChart(monthlySurveyResult = []) {
+            console.log(monthlySurveyResult)
+            if ($("#monthlySurveyResult").length && monthlySurveyResult.length) {
+
+                let labels = monthlySurveyResult.map(i => i.month);
+                let data   = monthlySurveyResult.map(i => i.total);
+
+                var areaData = {
+                    labels,
+                    datasets: [{
+                        label: 'Average Rating',
+                        backgroundColor: [
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                        ],
+                        borderColor: [
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                            'rgb(81 76 247)',
+                        ],
+                        data,
+                        borderWidth: 1,
+                        fill: true, // 3: no fill
+                    }]
+                };
+
+                var areaOptions = {
+                    plugins: {
+                        filler: {
+                            propagate: true
+                        }
+                    }
+                }
+
+                var areaChartCanvas = $("#monthlySurveyResult").get(0).getContext("2d");
+                var areaChart = new Chart(areaChartCanvas, {
+                    type: 'line',
+                    data: areaData,
+                    options: areaOptions
+                });
+            }
+        }
+        // ----- END MONTHLY SURVEY AREA CHART -----
+
+
+        // ----- MEDICINE BAR CHART -----
+        function medicineBarChart(medicine = []) {
+            if ($("#medicineBarChart").length && medicine.length) {
                 var options = {
                     scales: {
                         yAxes: [{
@@ -140,16 +287,16 @@
                     }]
                 };
 
-                var barChartCanvas = $("#barChart").get(0).getContext("2d");
+                var medicineBarChartCanvas = $("#medicineBarChart").get(0).getContext("2d");
                 // This will get the first returned node in the jQuery collection.
-                var barChart = new Chart(barChartCanvas, {
+                var medicineBarChart = new Chart(medicineBarChartCanvas, {
                     type: 'bar',
                     data: data,
                     options: options
                 });
             }
         }
-        // ----- END BAR CHART -----
+        // ----- END MEDICINE BAR CHART -----
 
 
         // ----- PAGE CONTENT -----
@@ -164,9 +311,22 @@
                 totalAppointment        = 0,
                 patientType             = [],
                 medicine                = [],
+                customerSatisfactory    = {},
+                monthlySurveyResult     = [],
+                rater                   = []
             } = data;
             
             let maxCapacity = 1000;
+
+            let raterHTML = '';
+            rater.map(rate => {
+                let { name, total } = rate;
+                raterHTML += `
+                <tr>
+                    <td>${name}</td>
+                    <th>${total}</th>
+                </tr>`;
+            })
 
             let html = `
             <div class="row p-2">
@@ -250,7 +410,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Patient Type</h4>
-                            <canvas id="pieChart"></canvas>
+                            <canvas id="patientTypePieChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -258,7 +418,62 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Medicine</h4>
-                            <canvas id="barChart"></canvas>
+                            <canvas id="medicineBarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-12 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Legend</h4>
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>5</th>
+                                    <td>Absolutely Satisfied</td>
+                                </tr>
+                                <tr>
+                                    <th>4</th>
+                                    <td>Highly Satisfied</td>
+                                </tr>
+                                <tr>
+                                    <th>3</th>
+                                    <td>Moderately Satisfied</td>
+                                </tr>
+                                <tr>
+                                    <th>4</th>
+                                    <td>Fairly Satisfied</td>
+                                </tr>
+                                <tr>
+                                    <th>1</th>
+                                    <td>Not Satisfied</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-12 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Customer Satisfactory</h4>
+                            <canvas id="customerSatisfactoryBarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-12 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Monthly Survey Result</h4>
+                            <canvas id="monthlySurveyResult"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-12 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Rater</h4>
+                            <table class="table table-bordered table-striped">
+                                ${raterHTML}
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -268,8 +483,10 @@
 
             setTimeout(() => {
                 $("#pageContent").html(html);
-                pieChart(patientType);
-                barChart(medicine);
+                patientTypePieChart(patientType);
+                medicineBarChart(medicine);
+                customerSatisfactoryBarChart(customerSatisfactory);
+                monthlySurveyAreaChart(monthlySurveyResult);
             }, 100)
         }
         pageContent();

@@ -178,13 +178,13 @@ CREATE TABLE `clinic_appointments` (
   `patient_id` bigint(20) DEFAULT NULL,
   `service_id` bigint(20) DEFAULT NULL,
   `purpose` text DEFAULT NULL,
-  `date_appointment` datetime DEFAULT NULL,
+  `date_appointment` date DEFAULT NULL,
   `is_done` int(11) DEFAULT 0,
   `is_deleted` int(11) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`clinic_appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +193,7 @@ CREATE TABLE `clinic_appointments` (
 
 LOCK TABLES `clinic_appointments` WRITE;
 /*!40000 ALTER TABLE `clinic_appointments` DISABLE KEYS */;
-INSERT INTO `clinic_appointments` VALUES (1,1,2,'TEST','2021-12-05 00:00:00',1,0,'2021-12-05 05:35:10','2021-12-05 05:39:20');
+INSERT INTO `clinic_appointments` VALUES (1,1,2,'TEST','2021-12-15',1,0,'2021-12-05 05:35:10','2021-12-05 11:49:53'),(2,1,2,'test','2021-12-03',0,1,'2021-12-05 11:49:28','2021-12-05 11:49:36');
 /*!40000 ALTER TABLE `clinic_appointments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -523,7 +523,7 @@ CREATE TABLE `surveys` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`survey_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -532,7 +532,7 @@ CREATE TABLE `surveys` (
 
 LOCK TABLES `surveys` WRITE;
 /*!40000 ALTER TABLE `surveys` DISABLE KEYS */;
-INSERT INTO `surveys` VALUES (1,1,1,1,5,4,3,2,1,2,3,4,5,4,0,'2021-12-05 05:39:20','2021-12-05 05:57:46');
+INSERT INTO `surveys` VALUES (1,1,1,1,5,4,3,2,1,2,3,4,5,4,0,'2021-12-05 05:39:20','2021-12-05 05:57:46'),(2,2,1,1,1,1,2,1,2,1,1,1,1,4,0,'2021-08-05 05:39:20','2021-12-05 11:35:43');
 /*!40000 ALTER TABLE `surveys` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -605,4 +605,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-05 14:21:56
+-- Dump completed on 2021-12-05 19:51:45
