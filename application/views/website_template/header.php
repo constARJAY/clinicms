@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Clinic Management System</title>
+<title>DentaL | Template</title>
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" type="image/x-icon" href="<?=base_url()?>assets/website/assets/img/icon/xfavicon.png.pagespeed.ic.fLyqCcbNEx.png">
@@ -50,6 +50,7 @@
 </li>
 
 <?php if($sessionID ):?>
+    <li><a href="<?= base_url("login/logoutWebsite")?>">Logout</a></li>
     <li class="header-right-btn"><a href="#" class="header-btn make-appointment">Make Appointment</a> </li>
 <?php else:?>
     <li><a href="#" class="login">Login</a></li>
