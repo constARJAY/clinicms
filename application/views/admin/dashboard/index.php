@@ -299,6 +299,76 @@
         // ----- END MEDICINE BAR CHART -----
 
 
+        // ----- QUESTION SURVEY -----
+        function questionSurvey(questions = [], elementID = "") {
+            if ($(`#${elementID}BarChart`).length && questions.length) {
+                var options = {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                        },
+                        elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+
+                };
+
+                let labels  = ['1', '2', '3', '4', '5'];
+                let barData = [
+                    questions.filter(q => q.columnName == elementID)?.[0].ratings.rating1,
+                    questions.filter(q => q.columnName == elementID)?.[0].ratings.rating2,
+                    questions.filter(q => q.columnName == elementID)?.[0].ratings.rating3,
+                    questions.filter(q => q.columnName == elementID)?.[0].ratings.rating4,
+                    questions.filter(q => q.columnName == elementID)?.[0].ratings.rating5,
+                ];
+
+
+                var data = {
+                    labels,
+                    datasets: [{
+                        label: 'Stocks',
+                        data: barData,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                };
+
+                var canvas = $(`#${elementID}BarChart`).get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                var barChart = new Chart(canvas, {
+                    type: 'bar',
+                    data: data,
+                    options: options
+                });
+            }
+        }
+        // ----- END QUESTION SURVEY -----
+
+
         // ----- PAGE CONTENT -----
         function pageContent() {
             $("#pageContent").html(preloader);
@@ -313,7 +383,8 @@
                 medicine                = [],
                 customerSatisfactory    = {},
                 monthlySurveyResult     = [],
-                rater                   = []
+                rater                   = [],
+                questions               = [],
             } = data;
             
             let maxCapacity = 1000;
@@ -422,6 +493,109 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-12 mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="mb-0">Customer Satisfactory</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 1</h4>
+                                            <p>1. Served with a smile and appropriately dressed.</p>
+                                            <canvas id="q1BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 2</h4>
+                                            <p>2. Observed clean, organized office with appropriate facilites and visible and clear information</p>
+                                            <canvas id="q2BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 3</h4>
+                                            <p>3. Rendered on time service.</p>
+                                            <canvas id="q3BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 4</h4>
+                                            <p>4. Delivered accurate service</p>
+                                            <canvas id="q4BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 5</h4>
+                                            <p>5. Provide quick services.</p>
+                                            <canvas id="q5BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 6</h4>
+                                            <p>6. Handled request, complaints and solution/s to problem with flexibility</p>
+                                            <canvas id="q6BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 7</h4>
+                                            <p>7. Observed trust and confidentiality</p>
+                                            <canvas id="q7BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 8</h4>
+                                            <p>8. Demonstrated courtesy and competence</p>
+                                            <canvas id="q8BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 9</h4>
+                                            <p>9. Made the client feel important</p>
+                                            <canvas id="q9BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 my-2" style="">
+                                    <div class="card" style="height: 100%;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Question 10</h4>
+                                            <p>10. Spoke clearly, and used appropriate langeuage</p>
+                                            <canvas id="q10BarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-lg-3 col-sm-12 mt-4">
                     <div class="card">
                         <div class="card-body">
@@ -487,6 +661,12 @@
                 medicineBarChart(medicine);
                 customerSatisfactoryBarChart(customerSatisfactory);
                 monthlySurveyAreaChart(monthlySurveyResult);
+                
+                let questionArr = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10'];
+                questionArr.map(elementID => {
+                    questionSurvey(questions, elementID);
+                })
+
             }, 100)
         }
         pageContent();

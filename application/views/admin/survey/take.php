@@ -100,7 +100,7 @@
                     </tr>
                     <tr>
                         <th class="text-center">
-                            <input type="checkbox" <?= $information->patient_type_id == 2 ? "checked" : "" ?> disabled>
+                            <input type="checkbox" <?= $information->patient_type_id == 1 ? "checked" : "" ?> disabled>
                         </th>
                         <th colspan="3">Faculty</th>
                         <th class="text-center">

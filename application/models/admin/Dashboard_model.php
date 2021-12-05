@@ -137,6 +137,37 @@ class Dashboard_model extends CI_Model {
         return $data;
     }
 
+    public function getQuestionRating($columnName = "")
+    {
+        $sql   = "SELECT SUM($columnName = 1) AS rating1, SUM($columnName = 2) AS rating2, SUM($columnName = 3) AS rating3, SUM($columnName = 4) AS rating4, SUM($columnName = 5) AS rating5 FROM surveys";
+        $query = $this->db->query($sql);
+        return $query ? $query->row() : null;
+    }
+
+    public function getRating()
+    {
+        $data = [];
+
+        $questions = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10"];
+        foreach($questions AS $question)
+        {
+            $rating = $this->getQuestionRating($question);
+            if ($rating)
+            $data[] = [
+                'columnName' => $question,
+                'ratings'    => [
+                    'rating1' => $rating->rating1 ?? 0,
+                    'rating2' => $rating->rating2 ?? 0,
+                    'rating3' => $rating->rating3 ?? 0,
+                    'rating4' => $rating->rating4 ?? 0,
+                    'rating5' => $rating->rating5 ?? 0,
+                ]
+            ];
+        }
+
+        return $data;
+    }
+
     public function getDashboardData()
     {
         $totalPatient = $this->getTotalPatient();
@@ -154,7 +185,8 @@ class Dashboard_model extends CI_Model {
             "medicine"                => $this->getMedicine(),
             "customerSatisfactory"    => $this->getCustomerSatisfactory(),
             "monthlySurveyResult"     => $this->getMonthlySurvey(),
-            "rater"                   => $this->getRater()
+            "rater"                   => $this->getRater(),
+            "questions"               => $this->getRating()
         ];
     }    
 
