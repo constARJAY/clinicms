@@ -101,13 +101,13 @@
     
                         tbodyHTML += `
                         <tr>
+                            <td>${moment(created_at).format("MMMM DD, YYYY")}</td>
                             <td>${fullname}</td>
                             <td>${p_gender}</td>
                             <td>${p_age}</td>
                             <td>${c_name || "-"}</td>
                             <td>${p_year}</td>
                             <td>${p_section}</td>
-                            <td>${moment(created_at).format("MMMM DD, YYYY")}</td>
                         </tr>`;
     
                     })
@@ -116,13 +116,13 @@
                     <table class="table table-bordered" id="tableMedical">
                         <thead>
                             <tr class="text-center">
+                                <th class="thSm">Date</th>
                                 <th class="thMd">Full Name</th>
                                 <th class="thSm">Gender</th>
                                 <th class="thSm">Age</th>
                                 <th class="thSm">Course</th>
                                 <th class="thSm">Year</th>
                                 <th class="thSm">Section</th>
-                                <th class="thSm">Date</th>
                             </tr>
                         </thead>
                         <tbody id="tableMedicalTbody">
@@ -159,10 +159,10 @@
     
                         tbodyHTML += `
                         <tr>
+                            <td>${moment(created_at).format("MMMM DD, YYYY")}</td>
                             <td>${fullname}</td>
                             <td>${m_name}</td>
                             <td>${quantity}</td>
-                            <td>${moment(created_at).format("MMMM DD, YYYY")}</td>
                         </tr>`;
                     })
 
@@ -170,10 +170,10 @@
                     <table class="table table-bordered" id="tableMedical">
                         <thead>
                             <tr class="text-center">
+                                <th class="thSm">Date</th>
                                 <th class="thMd">Full Name</th>
                                 <th class="thSm">Medicine</th>
                                 <th class="thSm">Quantity</th>
-                                <th class="thSm">Date</th>
                             </tr>
                         </thead>
                         <tbody id="tableMedicalTbody">

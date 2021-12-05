@@ -44,5 +44,27 @@ class Login extends CI_Controller {
         redirect(base_url('login'));
     }
 
+    public function authenticateWebsite()
+    {
+        $email    = $this->input->post("email");
+        $password = $this->input->post("password");
+
+        $this->load->library('encryption');
+
+        $authenticate = $this->login->authenticateWebsite($email, $password);
+        if ($authenticate) {
+            redirect('welcome','refresh');
+        } else {
+            $this->session->set_flashdata('feedback', 'error');
+            redirect(base_url('welcome'));
+        }
+    }
+
+    public function logoutWebsite()
+    {
+        $this->session->sess_destroy('patientID');
+        redirect(base_url('welcome'));
+    }
+
 }
 

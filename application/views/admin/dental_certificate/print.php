@@ -41,6 +41,7 @@
             outline: none;
             border: none;
             border-bottom: 1px solid black;
+            padding-left: 3px;
         }
         .input-checkbox {
             width: auto;
@@ -82,7 +83,7 @@
 
     </style>
 </head>
-<body>
+<body >
     <div class="student-copy">
         <div class="header">
             <div>Republic of the Philippines</div>
@@ -102,29 +103,29 @@
         </div>
         <div class="date">
             <span>DATE: </span>
-            <input type="text" class="input-bottom">
+            <input type="text" class="input-bottom" value="<?= date('F d, Y', strtotime($information->date_header)) ?>">
         </div>
         <div>To Whom It May Concern:</div>
         <div class="letter-body">
-            This is to certify that <b>MR./MS.<input type="text" class="input-bottom" style="width: 250px;"></b>, <input type="text" class="input-bottom" style="width: 50px;"> years old, <b>MALE/ FEMALE</b>, presently residing at <b><input type="text" class="input-bottom" style="width: 200px;"></b> reported to the undersigned for:
+            This is to certify that <b>MR./MS.<input type="text" class="input-bottom" value="<?= $information->fullname ?? "-" ?>" style="width: 250px;"></b>, <input type="text" class="input-bottom" value="<?= $information->age ?? "-" ?>" style="width: 50px;"> years old, <b>MALE/ FEMALE</b>, presently residing at <b><input type="text" class="input-bottom" value="<?= $information->address ?? "-" ?>" style="width: 200px;"></b> reported to the undersigned for:
         </div>
         <div class="checkbox-category">
-            󠇯<span class="category-item"><input type="checkbox">Routine check-up and Mouth Examination </span><br>
-            󠇯<span class="category-item"><input type="checkbox">Surgical removal or tooth extraction of Tooth # <input type="text" class="input-bottom input-checkbox"></span><br>
-            󠇯<span class="category-item"><input type="checkbox">Restorations of Tooth # <input type="text" class="input-bottom input-checkbox"></span><br>
-            󠇯<span class="category-item"><input type="checkbox">Oral Prophylaxis󠇯</span><br>
-            󠇯<span class="category-item"><input type="checkbox">Others: <input type="text" class="input-bottom input-checkbox"></span>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign1" ? "checked" : "" ?> disabled>Routine check-up and Mouth Examination </span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign2" ? "checked" : "" ?> disabled>Surgical removal or tooth extraction of Tooth # <input type="text" class="input-bottom input-checkbox" value="<?= $information->sign_name=="sign2" ? $information->sign_note : "" ?>"></span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign3" ? "checked" : "" ?> disabled>Restorations of Tooth # <input type="text" class="input-bottom input-checkbox" value="<?= $information->sign_name=="sign3" ? $information->sign_note : "" ?>"></span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign4" ? "checked" : "" ?> disabled>Oral Prophylaxis󠇯</span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign5" ? "checked" : "" ?> disabled>Others: <input type="text" class="input-bottom input-checkbox" value="<?= $information->sign_name=="sign5" ? $information->sign_note : "" ?>"></span>
         </div>
         <div class="recommendation">
             <b>Comment/Recommendation:</b>
         </div>
         <div class="checkbox-category">
-            <span class="category-item"><input type="checkbox">󠇯Fit to engage university academic and non- academic activity </span><br>
-            󠇯<span class="category-item"><input type="checkbox">Rest and Medication for  <input type="text" class="input-bottom input-checkbox"></span><br>
-            󠇯<span class="category-item"><input type="checkbox">󠇯Others: <input type="text" class="input-bottom input-checkbox"></span><br>
+            <span class="category-item"><input type="checkbox" <?= $information->comment_name=="comment1" ? "checked" : "" ?> disabled>󠇯Fit to engage university academic and non- academic activity </span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->comment_name=="comment2" ? "checked" : "" ?> disabled>Rest and Medication for  <input type="text" class="input-bottom input-checkbox" value="<?= $information->comment_name=="comment2" ? $information->comment_note : "" ?>"></span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->comment_name=="comment3" ? "checked" : "" ?> disabled>󠇯Others: <input type="text" class="input-bottom input-checkbox" value="<?= $information->comment_name=="comment3" ? $information->comment_note : "" ?>"></span><br>
         </div>
         <div class="letter-footer">
-            This certification is issued upon request for the aforementioned for record and references purposes. Given this <input type="text" class="input-bottom" style="width: 100px;"> day of <input type="text" class="input-bottom" style="width: 50px;">, 20<input type="text" class="input-bottom" style="width: 50px;">.
+            This certification is issued upon request for the aforementioned for record and references purposes. Given this <input type="text" class="input-bottom" style="width: 100px;" value="<?= date('F', strtotime($information->date_given)) ?>"> day of <input type="text" class="input-bottom" style="width: 50px;" value="<?= date('d', strtotime($information->date_given)) ?>">, 20<input type="text" class="input-bottom" style="width: 50px;" value="<?= date('y', strtotime($information->date_given)) ?>">.
         </div>
         <div class="letter-signature">
             <div class="text-center">
@@ -155,29 +156,29 @@
         </div>
         <div class="date">
             <span>DATE: </span>
-            <input type="text" class="input-bottom">
+            <input type="text" class="input-bottom" value="<?= date('F d, Y', strtotime($information->date_header)) ?>">
         </div>
         <div>To Whom It May Concern:</div>
         <div class="letter-body">
-            This is to certify that <b>MR./MS.<input type="text" class="input-bottom" style="width: 250px;"></b>, <input type="text" class="input-bottom" style="width: 50px;"> years old, <b>MALE/ FEMALE</b>, presently residing at <b><input type="text" class="input-bottom" style="width: 200px;"></b> reported to the undersigned for:
+            This is to certify that <b>MR./MS.<input type="text" class="input-bottom" value="<?= $information->fullname ?? "-" ?>" style="width: 250px;"></b>, <input type="text" class="input-bottom" value="<?= $information->gender ?? "-" ?>" style="width: 50px;"> years old, <b>MALE/ FEMALE</b>, presently residing at <b><input type="text" class="input-bottom" value="<?= $information->address ?? "-" ?>" style="width: 200px;"></b> reported to the undersigned for:
         </div>
         <div class="checkbox-category">
-            󠇯<span class="category-item"><input type="checkbox">Routine check-up and Mouth Examination </span><br>
-            󠇯<span class="category-item"><input type="checkbox">Surgical removal or tooth extraction of Tooth # <input type="text" class="input-bottom input-checkbox"></span><br>
-            󠇯<span class="category-item"><input type="checkbox">Restorations of Tooth # <input type="text" class="input-bottom input-checkbox"></span><br>
-            󠇯<span class="category-item"><input type="checkbox">Oral Prophylaxis󠇯</span><br>
-            󠇯<span class="category-item"><input type="checkbox">Others: <input type="text" class="input-bottom input-checkbox"></span>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign1" ? "checked" : "" ?> disabled>Routine check-up and Mouth Examination </span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign2" ? "checked" : "" ?> disabled>Surgical removal or tooth extraction of Tooth # <input type="text" class="input-bottom input-checkbox" value="<?= $information->sign_name=="sign2" ? $information->sign_note : "" ?>"></span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign3" ? "checked" : "" ?> disabled>Restorations of Tooth # <input type="text" class="input-bottom input-checkbox" value="<?= $information->sign_name=="sign3" ? $information->sign_note : "" ?>"></span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign4" ? "checked" : "" ?> disabled>Oral Prophylaxis󠇯</span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->sign_name=="sign5" ? "checked" : "" ?> disabled>Others: <input type="text" class="input-bottom input-checkbox" value="<?= $information->sign_name=="sign5" ? $information->sign_note : "" ?>"></span>
         </div>
         <div class="recommendation">
             <b>Comment/Recommendation:</b>
         </div>
         <div class="checkbox-category">
-            <span class="category-item"><input type="checkbox">󠇯Fit to engage university academic and non- academic activity </span><br>
-            󠇯<span class="category-item"><input type="checkbox">Rest and Medication for  <input type="text" class="input-bottom input-checkbox"></span><br>
-            󠇯<span class="category-item"><input type="checkbox">󠇯Others: <input type="text" class="input-bottom input-checkbox"></span><br>
+            <span class="category-item"><input type="checkbox" <?= $information->comment_name=="comment1" ? "checked" : "" ?> disabled>󠇯Fit to engage university academic and non- academic activity </span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->comment_name=="comment2" ? "checked" : "" ?> disabled>Rest and Medication for  <input type="text" class="input-bottom input-checkbox" value="<?= $information->comment_name=="comment2" ? $information->comment_note : "" ?>"></span><br>
+            󠇯<span class="category-item"><input type="checkbox" <?= $information->comment_name=="comment3" ? "checked" : "" ?> disabled>󠇯Others: <input type="text" class="input-bottom input-checkbox" value="<?= $information->comment_name=="comment3" ? $information->comment_note : "" ?>"></span><br>
         </div>
         <div class="letter-footer">
-            This certification is issued upon request for the aforementioned for record and references purposes. Given this <input type="text" class="input-bottom" style="width: 100px;"> day of <input type="text" class="input-bottom" style="width: 50px;">, 20<input type="text" class="input-bottom" style="width: 50px;">.
+            This certification is issued upon request for the aforementioned for record and references purposes. Given this <input type="text" class="input-bottom" style="width: 100px;" value="<?= date('F', strtotime($information->date_given)) ?>"> day of <input type="text" class="input-bottom" style="width: 50px;" value="<?= date('d', strtotime($information->date_given)) ?>">, 20<input type="text" class="input-bottom" style="width: 50px;" value="<?= date('y', strtotime($information->date_given)) ?>">.
         </div>
         <div class="letter-signature">
             <div class="text-center">
@@ -188,5 +189,7 @@
         </div>
         <div class="footer-copy">File Copy</div>
     </div>
+
+    <script>window.print();</script>
 </body>
 </html>

@@ -5,7 +5,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="mb-0">Dashboard</h4>
-                        <div><?= date("M d, Y") ?></div>
+                        <div><?= date("F d, Y") ?></div>
                     </div>
                 </div>
                 <div class="card-body" id="pageContent"></div>
@@ -40,6 +40,118 @@
         // ----- END DASHBOARD DATA -----
 
 
+        // ----- PIE CHART -----
+        function pieChart(patientType = []) {
+            if ($("#pieChart").length && patientType.length) {
+
+                let data   = patientType.map(p => +p.count);
+                let labels = patientType.map(p => p.name);
+
+                var doughnutPieData = {
+                    datasets: [{
+                        data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)',
+                            'rgba(255, 159, 64, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                    }],
+                    labels
+                };
+
+                var doughnutPieOptions = {
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                };
+
+                var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+                var pieChart = new Chart(pieChartCanvas, {
+                    type: 'pie',
+                    data: doughnutPieData,
+                    options: doughnutPieOptions
+                });
+            }
+        }
+        // ----- END PIE CHART -----
+
+
+        // ----- BAR CHART -----
+        function barChart(medicine = []) {
+            if ($("#barChart").length && medicine.length) {
+                var options = {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                        },
+                        elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+
+                };
+
+                let labels  = medicine.map(m => m.name);
+                let barData = medicine.map(m => +m.quantity);
+
+                var data = {
+                    labels,
+                    datasets: [{
+                        label: 'Stocks',
+                        data: barData,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                };
+
+                var barChartCanvas = $("#barChart").get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                var barChart = new Chart(barChartCanvas, {
+                    type: 'bar',
+                    data: data,
+                    options: options
+                });
+            }
+        }
+        // ----- END BAR CHART -----
+
+
         // ----- PAGE CONTENT -----
         function pageContent() {
             $("#pageContent").html(preloader);
@@ -49,7 +161,9 @@
                 totalPatient = 0,
                 totalMedicalAppointment = 0,
                 totalDentalAppointment  = 0,
-                totalAppointment        = 0
+                totalAppointment        = 0,
+                patientType             = [],
+                medicine                = [],
             } = data;
             
             let maxCapacity = 1000;
@@ -132,10 +246,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 col-sm-12 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Patient Type</h4>
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Medicine</h4>
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>`;
 
             setTimeout(() => {
                 $("#pageContent").html(html);
+                pieChart(patientType);
+                barChart(medicine);
             }, 100)
         }
         pageContent();

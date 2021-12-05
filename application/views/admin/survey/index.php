@@ -230,7 +230,7 @@
             let html = formContent();
             $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
             $("#modal_content").html(html);
-            $("#modal .page-title").text("ADD MEDICINE");
+            $("#modal .page-title").text("ADD SURVEY");
             $("#modal").modal('show');
             generateInputsID("#modal");
         });
@@ -240,11 +240,11 @@
         // ----- BUTTON EDIT -----
         $(document).on("click", ".btnEdit", function() {
             let surveyID = $(this).attr("surveyID");
-            let data = getTableData(`medicines WHERE survey_id = ${surveyID}`);
+            let data = getTableData(`surveys WHERE survey_id = ${surveyID}`);
 
             $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
             $("#modal_content").html(preloader);
-            $("#modal .page-title").text("EDIT MEDICINE");
+            $("#modal .page-title").text("EDIT SURVEY");
             $("#modal").modal('show');
 
             setTimeout(() => {
@@ -265,11 +265,11 @@
                 $("#modal").modal("hide");
 
                 let data = getFormData("modal");
-                    data["tableName"] = "medicines";
-                    data["feedback"]  = $(`[name="name"]`).val();
+                    data["tableName"] = "surveys";
+                    data["feedback"]  = "Survey";
                     data["method"]    = "add";
     
-                sweetAlertConfirmation("add", "Medicine", "modal", null, data, true, refreshTableContent);
+                sweetAlertConfirmation("add", "Survey", "modal", null, data, true, refreshTableContent);
             }
         })
         // ----- END BUTTON SAVE -----
@@ -284,12 +284,12 @@
                 $("#modal").modal("hide");
 
                 let data = getFormData("modal");
-                    data["tableName"]   = "medicines";
-                    data["feedback"]    = $(`[name="name"]`).val();
+                    data["tableName"]   = "surveys";
+                    data["feedback"]    = "Survey";
                     data["method"]      = "update";
                     data["whereFilter"] = `survey_id=${surveyID}`;
     
-                sweetAlertConfirmation("update", "Medicine", "modal", null, data, true, refreshTableContent);
+                sweetAlertConfirmation("update", "Survey", "modal", null, data, true, refreshTableContent);
             }
         })
         // ----- END BUTTON SAVE -----
@@ -300,15 +300,15 @@
             let surveyID = $(this).attr("surveyID");
 
             let data = {
-                tableName: 'medicines',
+                tableName: 'surveys',
                 tableData: {
                     is_deleted: 1
                 },
                 whereFilter: `survey_id=${surveyID}`,
-                feedback:    $(`[name="name"]`).val(),
+                feedback:    "Survey",
                 method:      "update"
             }
-            sweetAlertConfirmation("delete", "Medicine", "modal", null, data, true, refreshTableContent);
+            sweetAlertConfirmation("delete", "Survey", "modal", null, data, true, refreshTableContent);
         })
         // ----- END BUTTON DELETE -----
 

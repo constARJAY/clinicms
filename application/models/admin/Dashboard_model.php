@@ -18,6 +18,38 @@ class Dashboard_model extends CI_Model {
         return [$result->medical ?? 0, $result->dental ?? 0];
     }
 
+    public function getTotalPatientType($patientTypeID = 0)
+    {
+        $sql   = "SELECT COUNT(*) AS total FROM patients WHERE patient_type_id = $patientTypeID";
+        $query = $this->db->query($sql);
+        return $query ? $query->row()->total : 0;
+    }
+
+    public function getPatientType()
+    {
+        $sql    = "SELECT * FROM patient_type WHERE is_deleted = 0";
+        $query  = $this->db->query($sql);
+        $result = $query ? $query->result_array() : [];
+
+        $data = [];
+        foreach($result as $res) 
+        {
+            $data[] = [
+                'patient_type_id' => $res['patient_type_id'],
+                'name'            => $res['name'],
+                'count'           => $this->getTotalPatientType($res['patient_type_id'])
+            ];
+        }
+        return $data;
+    }
+
+    public function getMedicine()
+    {
+        $sql   = "SELECT * FROM medicines WHERE is_deleted = 0";
+        $query = $this->db->query($sql);
+        return $query ? $query->result_array() : [];
+    }
+
     public function getDashboardData()
     {
         $totalPatient = $this->getTotalPatient();
@@ -30,7 +62,9 @@ class Dashboard_model extends CI_Model {
             "totalPatient" => $totalPatient,
             "totalMedicalAppointment" => $totalMedicalAppointment,
             "totalDentalAppointment"  => $totalDentalAppointment,
-            "totalAppointment"        => $totalAppointment
+            "totalAppointment"        => $totalAppointment,
+            "patientType"             => $this->getPatientType(),
+            "medicine"                => $this->getMedicine(),
         ];
     }    
 

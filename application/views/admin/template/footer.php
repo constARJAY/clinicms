@@ -44,6 +44,7 @@
     <script src="<?= base_url('assets/vendors/jqvmap/maps/jquery.vmap.usa.js') ?>"></script>
     <script src="<?= base_url('assets/vendors/peity/jquery.peity.min.js') ?>"></script>
     <script src="<?= base_url('assets/js/jquery.flot.dashes.js') ?>"></script>
+    <script src="<?= base_url('assets/vendors/chart.js/Chart.min.js') ?>"></script>
     <!-- End plugin js for this page-->
 
     <!-- inject:js -->

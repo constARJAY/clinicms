@@ -8,6 +8,7 @@ class Dental_certificate extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('admin/DentalCertificate_model', 'dentalcertificate');
     }
 
     public function index()
@@ -20,7 +21,17 @@ class Dental_certificate extends CI_Controller {
 
     public function print()
     {
-        $this->load->view("admin/dental_certificate/print");
+        $dentalCertificateID = $this->input->get("id");
+        $dentalCertificateData = $this->dentalcertificate->getDentalCertificateData($dentalCertificateID);
+        // echo json_encode($dentalCertificateData);
+        if ($dentalCertificateData) {
+            $data['title']       = "PRINT DENTAL CERTIFICATION";
+            $data['information'] = $dentalCertificateData;
+            $this->load->view("admin/dental_certificate/print", $data);
+        } else {
+            redirect(base_url('admin/dental_certificate'),'refresh');
+        }
+        
     }
 
 }

@@ -121,10 +121,14 @@
                     <td>${age}</td>
                     <td>${gender}</td>
                     <td>${c_name || "-"}</td>
-                    <td>${year || "-"}}</td>
+                    <td>${year || "-"}</td>
                     <td>${section || "-"}</td>
                     <td>
                         <div class="text-center">
+                            <a class="btn btn-outline-primary btnView"
+                                href="patient/profile?id=1"
+                                target="_blank"
+                                patientID="${patient_id}"><i class="fas fa-eye"></i></a>
                             <button class="btn btn-outline-info btnEdit"
                                 patientID="${patient_id}"><i class="fas fa-pencil-alt"></i></button>
                             <button class="btn btn-outline-danger btnDelete"
@@ -138,7 +142,7 @@
             <table class="table table-bordered" id="tablePatient">
                 <thead>
                     <tr class="text-center">
-                        <th class="thXs">Patient ID</th>
+                        <th class="thSm">Patient ID</th>
                         <th class="thSm">Full Name</th>
                         <th class="thSm">Type</th>
                         <th class="thSm">Email</th>
@@ -194,8 +198,8 @@
                         <div class="col-md-8 col-sm-12 text-right">
                             <button class="btn btn-primary"
                                 id="btnAdd"><i class="fas fa-plus"></i> Add Patient</button>
-                            <button class="btn btn-warning"
-                                id="btnImport"><i class="fas fa-file-import"></i> Import Patient CSV</button>
+                            <!-- <button class="btn btn-warning"
+                                id="btnImport"><i class="fas fa-file-import"></i> Import Patient CSV</button> -->
                         </div>
                     </div>
                 </div>
@@ -399,34 +403,28 @@
                 <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label>Year</label>
-                        <select class="form-control validate"
+                        <input type="text" 
+                            class="form-control validate"
                             name="year"
+                            minlength="1"
+                            maxlength="50"
+                            value="${age}"
                             ${course_id && course_id == 2 ? "" : "disabled"}
                             ${course_id && course_id == 2 ? "" : "required"}>
-                            <option value="" selected>Select year</option>    
-                            <option value="I"   ${year == "I"   ? "selected" : ""}>I</option>
-                            <option value="II"  ${year == "II"  ? "selected" : ""}>II</option>
-                            <option value="III" ${year == "III" ? "selected" : ""}>III</option>
-                            <option value="IV"  ${year == "IV"  ? "selected" : ""}>IV</option>
-                            <option value="V"   ${year == "V"   ? "selected" : ""}>V</option>
-                        </select>
                         <div class="d-block invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-12">
                     <div class="form-group">
                         <label>Section</label>
-                        <select class="form-control validate"
+                        <input type="text" 
+                            class="form-control validate"
                             name="section"
-                            ${course_id && course_id == 2 ? "" : "disabled required"}
+                            minlength="1"
+                            maxlength="50"
+                            value="${age}"
+                            ${course_id && course_id == 2 ? "" : "disabled"}
                             ${course_id && course_id == 2 ? "" : "required"}>
-                            <option value="" selected>Select section</option>    
-                            <option value="1" ${section == "1" ? "selected" : ""}>1</option>
-                            <option value="2" ${section == "2" ? "selected" : ""}>2</option>
-                            <option value="3" ${section == "3" ? "selected" : ""}>3</option>
-                            <option value="4" ${section == "4" ? "selected" : ""}>4</option>
-                            <option value="5" ${section == "5" ? "selected" : ""}>5</option>
-                        </select>
                         <div class="d-block invalid-feedback"></div>
                     </div>
                 </div>
@@ -477,8 +475,8 @@
             let patientType = $(this).val();
 
             $(`[name="course_id"]`).val('0');
-            $(`[name="year"]`).val('0');
-            $(`[name="section"]`).val('0');
+            $(`[name="year"]`).val('');
+            $(`[name="section"]`).val('');
 
             if (patientType && patientType == 2) {
                 $(`[name="course_id"]`).removeAttr("disabled").attr("required", true);

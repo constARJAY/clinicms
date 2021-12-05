@@ -20,17 +20,29 @@
     $(document).ready(function() {
 
         // ----- GLOBAL VARIABLES -----
-        let measurementList = getTableData(`measurements WHERE is_deleted = 0`);
+        let patientList = getTableData(`patients WHERE is_deleted = 0`);
+        let checkupList = [
+            {key: "sign1", value: "Routine check-up and Mouth Examination"},
+            {key: "sign2", value: "Surgical removal or tooth extraction of Tooth"},
+            {key: "sign3", value: "Restorations of Tooth"},
+            {key: "sign4", value: "Oral Prophylaxis󠇯"},
+            {key: "sign5", value: "Others"},
+        ];
+        let commentList = [
+            {key: "comment1", value: "Fit to engage university academic and non- academic activity"},
+            {key: "comment2", value: "Rest and Medication for"},
+            {key: "comment3", value: "Others"},
+        ];
         // ----- END GLOBAL VARIABLES -----
 
 
         // ----- DATATABLES -----
         function initDataTables() {
-            if ($.fn.DataTable.isDataTable("#tableFirstAidKit")) {
-                $("#tableFirstAidKit").DataTable().destroy();
+            if ($.fn.DataTable.isDataTable("#tableDentalCertificate")) {
+                $("#tableDentalCertificate").DataTable().destroy();
             }
             
-            var table = $("#tableFirstAidKit")
+            var table = $("#tableDentalCertificate")
                 .css({ "min-width": "100%" })
                 .removeAttr("width")
                 .DataTable({
@@ -55,56 +67,54 @@
         function tableContent() {
 
             let tbodyHTML = '';
-            let data = getTableData(`
-                first_aid_kits AS fak
-                    LEFT JOIN measurements AS m USING(measurement_id) WHERE fak.is_deleted = 0`,
-                `fak.*, m.name AS m_name`);
+            let data = getTableData(
+                `dental_certificates AS dc
+                    LEFT JOIN patients AS p USING(patient_id)
+                WHERE dc.is_deleted = 0`,
+                `dc.*, CONCAT(firstname, ' ', middlename, ' ', lastname, ' ', suffix) AS fullname, age, gender`);
             data.map(item => {
                 let {
-                    first_aid_kit_id = "",
-                    name             = "",
-                    quantity         = "",
-                    m_name           = "",
+                    dental_certificate_id = "",
+                    fullname              = "",
+                    address               = "",
+                    date_header           = "",
+                    date_given            = "",
                 } = item;
-
-                let maximumValue = 500;
-                let ariaValue  = quantity > maximumValue ? maximumValue : quantity;
-                let percentage = ariaValue / maximumValue * 100;
-                    percentage = percentage.toFixed(1);
 
                 tbodyHTML += `
                 <tr>
-                    <td>
-                        <div class="progress progress-lg mt-2">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: ${percentage}%" aria-valuenow="${ariaValue}" aria-valuemin="0" aria-valuemax="${maximumValue}">${percentage}%</div>
-                        </div>
-                    </td>
-                    <td>${name}</td>
-                    <td>${m_name}</td>
-                    <td>${quantity}</td>
+                    <td>${fullname}</td>
+                    <td>${address}</td>
+                    <td>${moment(date_header).format("MMMM DD, YYYY")}</td>
+                    <td>${moment(date_given).format("MMMM DD, YYYY")}</td>
                     <td>
                         <div class="text-center">
+                            <a class="btn btn-primary text-white"
+                                href="dental_certificate/print?id=${dental_certificate_id}"
+                                target="_blank">
+                                <i class="fas fa-print"></i> Print
+                            </a>
                             <button class="btn btn-outline-info btnEdit"
-                                firstAidKitID="${first_aid_kit_id}"><i class="fas fa-pencil-alt"></i></button>
+                                dentalCertificateID="${dental_certificate_id}"><i class="fas fa-pencil-alt"></i></button>
                             <button class="btn btn-outline-danger btnDelete"
-                                firstAidKitID="${first_aid_kit_id}"><i class="fas fa-trash-alt"></i></button>
+                                dentalCertificateID="${dental_certificate_id}"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </td>
                 </tr>`;
             });
 
             let html = `
-            <table class="table table-bordered" id="tableFirstAidKit">
+            <table class="table table-bordered" id="tableDentalCertificate">
                 <thead>
                     <tr class="text-center">
-                        <th class="thMd">Percentage</th>
-                        <th class="thSm">Equipment Name</th>
-                        <th class="thSm">Measurement</th>
-                        <th class="thXs">Quantity</th>
+                        <th class="thSm">Full Name</th>
+                        <th class="thSm">Address</th>
+                        <th class="thXs">Date Issued</th>
+                        <th class="thXs">Date Given</th>
                         <th class="thSm">Action</th>
                     </tr>
                 </thead>
-                <tbody id="tableFirstAidKitTbody">
+                <tbody id="tableDentalCertificateTbody">
                     ${tbodyHTML}
                 </tbody>
             </table>`;
@@ -138,7 +148,7 @@
                         <div class="col-md-4 col-sm-12"></div>
                         <div class="col-md-8 col-sm-12 text-right">
                             <button class="btn btn-primary"
-                                id="btnAdd"><i class="fas fa-plus"></i> Add First-aid Kit</button>
+                                id="btnAdd"><i class="fas fa-plus"></i> Add Dental Certificate</button>
                         </div>
                     </div>
                 </div>
@@ -154,76 +164,171 @@
         // ----- END PAGE CONTENT -----
 
 
-        // ----- MEASUREMENT OPTIONS DISPLAY -----
-        function getMeasurementOptionDisplay(measurementID = 0) {
-            let html = `<option value="" selected>Select measurement</option>`;
-            measurementList.map(measurement => {
+        // ----- PATIENT OPTIONS DISPLAY -----
+        function getPatientOptionDisplay(patientID = 0) {
+            let html = `<option value="" selected>Select patient</option>`;
+            patientList.map(patient => {
                 let {
-                    measurement_id,
-                    name
-                } = measurement;
+                    patient_id,
+                    firstname,
+                    middlename,
+                    lastname,
+                    suffix
+                } = patient;
+
+                let fullname = `${firstname} ${middlename} ${lastname} ${suffix}`;
 
                 html += `
-                <option value="${measurement_id}"
-                    ${measurement_id == measurementID ? "selected" : ""}>${name}</option>`;
+                <option value="${patient_id}"
+                    ${patient_id == patientID ? "selected" : ""}>${fullname}</option>`;
             })
             return html;
         }
-        // ----- END MEASUREMENT OPTIONS DISPLAY -----
+        // ----- END PATIENT OPTIONS DISPLAY -----
+
+
+        // ----- SIGN OPTIONS DISPLAY -----
+        function getSignOptionDisplay(keyID = 0) {
+            let html = `<option value="" selected>Select checkup</option>`;
+            checkupList.map(checkup => {
+                let {
+                    key,
+                    value
+                } = checkup;
+
+                html += `
+                <option value="${key}"
+                    ${key == keyID ? "selected" : ""}>${value}</option>`;
+            })
+            return html;
+        }
+        // ----- END SIGN OPTIONS DISPLAY -----
+
+
+        // ----- COMMENT OPTIONS DISPLAY -----
+        function getCommentOptionDisplay(keyID = 0) {
+            let html = `<option value="" selected>Select comment/recommendation</option>`;
+            commentList.map(comment => {
+                let {
+                    key,
+                    value
+                } = comment;
+
+                html += `
+                <option value="${key}"
+                    ${key == keyID ? "selected" : ""}>${value}</option>`;
+            })
+            return html;
+        }
+        // ----- END COMMENT OPTIONS DISPLAY -----
 
 
         // ----- FORM CONTENT -----
         function formContent(data = false, isUpdate = false) {
             let {
-                first_aid_kit_id = "",
-                measurement_id   = "",
-                name             = "",
-                quantity         = "",
+                dental_certificate_id = "",
+                patient_id            = "",
+                date_header           = "",
+                address               = "",
+                sign_name             = "",
+                sign_note             = "",
+                comment_name          = "",
+                comment_note          = "",
+                date_given            = "",
             } = data && data[0];
 
             let buttonSaveUpdate = !isUpdate ? `
             <button class="btn btn-primary" 
                 id="btnSave"
-                firstAidKitID="${first_aid_kit_id}">Save</button>` : `
+                dentalCertificateID="${dental_certificate_id}">Save</button>` : `
             <button class="btn btn-primary" 
                 id="btnUpdate"
-                firstAidKitID="${first_aid_kit_id}">Update</button>`;
+                dentalCertificateID="${dental_certificate_id}">Update</button>`;
 
             let html = `
             <div class="row p-3">
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
-                        <label>Equipment Name <code>*</code></label>
-                        <input type="text" 
-                            class="form-control validate"
-                            name="name"
-                            minlength="2"
-                            maxlength="20"
-                            value="${name}"
-                            required>
-                        <div class="d-block invalid-feedback"></div>
-                    </div>
-                </div>
-                <div class="col-md-12 col-sm-12">
-                    <div class="form-group">
-                        <label>Measurement <code>*</code></label>
+                        <label>Patient <code>*</code></label>
                         <select class="form-control validate"
-                            name="measurement_id"
+                            name="patient_id"
                             required>
-                            ${getMeasurementOptionDisplay(measurement_id)}    
+                            ${getPatientOptionDisplay(patient_id)}
                         </select>
                         <div class="d-block invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
-                        <label>Quantity <code>*</code></label>
-                        <input type="number" 
+                        <label>Address <code>*</code></label>
+                        <input type="text"
                             class="form-control validate"
-                            name="quantity"
-                            minlength="2"
-                            maxlength="20"
-                            value="${quantity}"
+                            name="address"
+                            value="${address}"
+                            required>
+                        <div class="d-block invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>Check-up <code>*</code></label>
+                        <select class="form-control validate"
+                            name="sign_name"
+                            required>
+                            ${getSignOptionDisplay(sign_name)}
+                        </select>
+                        <div class="d-block invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <input type="text"
+                            class="form-control validate"
+                            name="sign_note"
+                            value="${sign_note}">
+                        <div class="d-block invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>Comment/Recommendation <code>*</code></label>
+                        <select class="form-control validate"
+                            name="comment_name"
+                            required>
+                            ${getCommentOptionDisplay(comment_name)}
+                        </select>
+                        <div class="d-block invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <input type="text"
+                            class="form-control validate"
+                            name="comment_note"
+                            value="${comment_note}">
+                        <div class="d-block invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>Date Issued</label>
+                        <input type="date"
+                            class="form-control validate"
+                            name="date_header"
+                            value="${date_header}"
+                            required>
+                        <div class="d-block invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>Date Given</label>
+                        <input type="date"
+                            class="form-control validate"
+                            name="date_given"
+                            value="${date_given}"
                             required>
                         <div class="d-block invalid-feedback"></div>
                     </div>
@@ -244,7 +349,7 @@
             let html = formContent();
             $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
             $("#modal_content").html(html);
-            $("#modal .page-title").text("ADD FIRST-AID KIT");
+            $("#modal .page-title").text("ADD CERTIFICATE");
             $("#modal").modal('show');
             generateInputsID("#modal");
         });
@@ -253,12 +358,12 @@
 
         // ----- BUTTON EDIT -----
         $(document).on("click", ".btnEdit", function() {
-            let firstAidKitID = $(this).attr("firstAidKitID");
-            let data = getTableData(`first_aid_kits WHERE first_aid_kit_id = ${firstAidKitID}`);
+            let dentalCertificateID = $(this).attr("dentalCertificateID");
+            let data = getTableData(`dental_certificates WHERE dental_certificate_id = ${dentalCertificateID}`);
 
             $("#modal .modal-dialog").removeClass("modal-md").addClass("modal-md");
             $("#modal_content").html(preloader);
-            $("#modal .page-title").text("EDIT FIRST-AID KIT");
+            $("#modal .page-title").text("EDIT CERTIFICATE");
             $("#modal").modal('show');
 
             setTimeout(() => {
@@ -272,18 +377,18 @@
 
         // ----- BUTTON SAVE -----
         $(document).on("click", `#btnSave`, function() {
-            let firstAidKitID = $(this).attr("firstAidKitID");
+            let dentalCertificateID = $(this).attr("dentalCertificateID");
             
             let validate = validateForm("modal");
             if (validate) {
                 $("#modal").modal("hide");
 
                 let data = getFormData("modal");
-                    data["tableName"] = "first_aid_kits";
-                    data["feedback"]  = $(`[name="name"]`).val();
+                    data["tableName"] = "dental_certificates";
+                    data["feedback"]  = "Certificate";
                     data["method"]    = "add";
     
-                sweetAlertConfirmation("add", "First-aid Kit", "modal", null, data, true, refreshTableContent);
+                sweetAlertConfirmation("add", "Dental Certificate", "modal", null, data, true, refreshTableContent);
             }
         })
         // ----- END BUTTON SAVE -----
@@ -291,19 +396,19 @@
 
         // ----- BUTTON SAVE -----
         $(document).on("click", `#btnUpdate`, function() {
-            let firstAidKitID = $(this).attr("firstAidKitID");
+            let dentalCertificateID = $(this).attr("dentalCertificateID");
             
             let validate = validateForm("modal");
             if (validate) {
                 $("#modal").modal("hide");
 
                 let data = getFormData("modal");
-                    data["tableName"]   = "first_aid_kits";
-                    data["feedback"]    = $(`[name="name"]`).val();
+                    data["tableName"]   = "dental_certificates";
+                    data["feedback"]    = "Certificate";
                     data["method"]      = "update";
-                    data["whereFilter"] = `first_aid_kit_id=${firstAidKitID}`;
+                    data["whereFilter"] = `dental_certificate_id=${dentalCertificateID}`;
     
-                sweetAlertConfirmation("update", "First-aid Kit", "modal", null, data, true, refreshTableContent);
+                sweetAlertConfirmation("update", "Dental Certificate", "modal", null, data, true, refreshTableContent);
             }
         })
         // ----- END BUTTON SAVE -----
@@ -311,18 +416,18 @@
 
         // ----- BUTTON DELETE -----
         $(document).on("click", `.btnDelete`, function() {
-            let firstAidKitID = $(this).attr("firstAidKitID");
+            let dentalCertificateID = $(this).attr("dentalCertificateID");
 
             let data = {
-                tableName: 'first_aid_kits',
+                tableName: 'dental_certificates',
                 tableData: {
                     is_deleted: 1
                 },
-                whereFilter: `first_aid_kit_id=${firstAidKitID}`,
-                feedback:    $(`[name="name"]`).val(),
+                whereFilter: `dental_certificate_id=${dentalCertificateID}`,
+                feedback:    "Certificate",
                 method:      "update"
             }
-            sweetAlertConfirmation("delete", "First-aid Kit", "modal", null, data, true, refreshTableContent);
+            sweetAlertConfirmation("delete", "Dental Certificate", "modal", null, data, true, refreshTableContent);
         })
         // ----- END BUTTON DELETE -----
 

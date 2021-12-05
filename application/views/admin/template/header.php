@@ -124,10 +124,10 @@
                         <img src="<?= base_url('assets/uploads/profile/default.jpg') ?>" alt="profile"/>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                        <a class="dropdown-item">
+                        <!-- <a class="dropdown-item">
                             <i class="mdi mdi-settings "></i>
                             Settings
-                        </a>
+                        </a> -->
                         <a class="dropdown-item"
                             href="<?= base_url('login/logout') ?>">
                             <i class="mdi mdi-logout"></i>
@@ -224,18 +224,20 @@
                         <span class="menu-title ml-3"> Survey</span>
                         </a>
                     </li>
+                    <!-- 
                     <li class="nav-item">
                         <a class="nav-link" href="<?= base_url('admin/users') ?>">
                         <i class="fas fa-user-cog"></i>
                         <span class="menu-title ml-3"> Users</span>
                         </a>
-                    </li>
+                    </li> 
                     <li class="nav-item">
-                        <a class="nav-link" href="../widgets/widgets.html">
+                        <a class="nav-link" href="<?= base_url('admin/settings') ?>">
                         <i class="fas fa-cogs"></i>
                         <span class="menu-title ml-3"> Settings</span>
                         </a>
                     </li>
+                    -->
                 </ul>
             </nav>
             <!-- ----- END SIDE MENU ----- -->

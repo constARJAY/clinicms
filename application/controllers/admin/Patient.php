@@ -23,5 +23,23 @@ class Patient extends CI_Controller {
         echo json_encode($patient);
     }
 
+    public function profile()
+    {
+        $patientID = $this->input->get("id");
+
+        $data['title'] = "Patient";
+        $data['information'] = $this->patient->getProfileInformation($patientID);
+        $data['checkups']    = $this->patient->getCheckupHistory($patientID);
+        $this->load->view("admin/template/header", $data);
+        $this->load->view("admin/patient/profile");
+        $this->load->view("admin/template/footer");
+    }
+
+    public function getCheckupData()
+    {
+        $checkUpID = $this->input->post("checkUpID");
+        echo json_encode($this->patient->getCheckupData($checkUpID));
+    }
+
 }
 

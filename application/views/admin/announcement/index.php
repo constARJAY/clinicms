@@ -185,10 +185,10 @@
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label>Date <code>*</code></label>
-                        <input type="button"
-                            class="form-control validate daterange text-left"
+                        <input type="date"
+                            class="form-control validate"
                             name="date"
-                            value="${date ? moment(date).format("MMMM DD, YYYY") : ""}"
+                            value="${date}"
                             required>
                         <div class="d-block invalid-feedback"></div>
                     </div>
