@@ -52,15 +52,15 @@ DROP TABLE IF EXISTS `care_equipments`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `care_equipments` (
   `care_equipment_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `measurement_id` bigint(20) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
+  `measurement` varchar(100) DEFAULT NULL,
   `quantity` decimal(15,2) DEFAULT NULL,
   `condition` varchar(255) DEFAULT NULL,
   `is_deleted` int(11) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`care_equipment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,6 +69,7 @@ CREATE TABLE `care_equipments` (
 
 LOCK TABLES `care_equipments` WRITE;
 /*!40000 ALTER TABLE `care_equipments` DISABLE KEYS */;
+INSERT INTO `care_equipments` VALUES (1,'test','123',10.00,'test',1,'2021-12-05 12:52:07','2021-12-05 12:52:20'),(2,'123','123',123.00,'123',0,'2021-12-05 12:52:33','2021-12-05 12:52:33');
 /*!40000 ALTER TABLE `care_equipments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,14 +269,14 @@ DROP TABLE IF EXISTS `first_aid_kits`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `first_aid_kits` (
   `first_aid_kit_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `measurement_id` bigint(20) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
+  `measurement` varchar(100) DEFAULT NULL,
   `quantity` decimal(15,2) DEFAULT NULL,
   `is_deleted` int(11) DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`first_aid_kit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -284,7 +285,7 @@ CREATE TABLE `first_aid_kits` (
 
 LOCK TABLES `first_aid_kits` WRITE;
 /*!40000 ALTER TABLE `first_aid_kits` DISABLE KEYS */;
-INSERT INTO `first_aid_kits` VALUES (1,1,'test',400.00,0,'2021-12-05 06:03:19','2021-12-05 06:03:19');
+INSERT INTO `first_aid_kits` VALUES (1,'test','test',400.00,0,'2021-12-05 06:03:19','2021-12-05 12:50:08'),(2,'TEST','test',10.00,0,'2021-12-05 12:49:39','2021-12-05 12:49:39');
 /*!40000 ALTER TABLE `first_aid_kits` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -372,7 +373,7 @@ CREATE TABLE `medicines` (
 
 LOCK TABLES `medicines` WRITE;
 /*!40000 ALTER TABLE `medicines` DISABLE KEYS */;
-INSERT INTO `medicines` VALUES (1,'Bioflu','-',50.00,0,'2021-12-05 05:18:07','2021-12-05 05:39:20'),(2,'Biogesic','-',50.00,0,'2021-12-05 05:18:45','2021-12-05 05:39:20');
+INSERT INTO `medicines` VALUES (1,'Bioflu','-',1000.00,0,'2021-12-05 05:18:07','2021-12-05 12:53:38'),(2,'Biogesic','-',50.00,0,'2021-12-05 05:18:45','2021-12-05 05:39:20');
 /*!40000 ALTER TABLE `medicines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -605,4 +606,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-05 19:51:45
+-- Dump completed on 2021-12-05 20:54:04

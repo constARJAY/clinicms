@@ -53,17 +53,14 @@
         function tableContent() {
 
             let tbodyHTML = '';
-            let data = getTableData(`
-                care_equipments AS ce
-                    LEFT JOIN measurements AS m USING(measurement_id) WHERE ce.is_deleted = 0`,
-                `ce.*, m.name AS m_name`);
+            let data = getTableData(`care_equipments WHERE is_deleted = 0`);
             data.map(item => {
                 let {
                     care_equipment_id = "",
                     name              = "",
                     quantity          = "",
                     condition         = "",
-                    m_name            = "",
+                    measurement       = "",
                 } = item;
 
                 let maximumValue = 500;
@@ -79,7 +76,7 @@
                         </div>
                     </td>
                     <td>${name}</td>
-                    <td>${m_name}</td>
+                    <td>${measurement}</td>
                     <td>${quantity}</td>
                     <td>${condition}</td>
                     <td>
@@ -155,29 +152,11 @@
         // ----- END PAGE CONTENT -----
 
 
-        // ----- MEASUREMENT OPTIONS DISPLAY -----
-        function getMeasurementOptionDisplay(measurementID = 0) {
-            let html = `<option value="" selected>Select measurement</option>`;
-            measurementList.map(measurement => {
-                let {
-                    measurement_id,
-                    name
-                } = measurement;
-
-                html += `
-                <option value="${measurement_id}"
-                    ${measurement_id == measurementID ? "selected" : ""}>${name}</option>`;
-            })
-            return html;
-        }
-        // ----- END MEASUREMENT OPTIONS DISPLAY -----
-
-
         // ----- FORM CONTENT -----
         function formContent(data = false, isUpdate = false) {
             let {
                 care_equipment_id = "",
-                measurement_id    = "",
+                measurement       = "",
                 name              = "",
                 quantity          = "",
                 condition         = "",
@@ -209,11 +188,11 @@
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label>Measurement <code>*</code></label>
-                        <select class="form-control validate"
-                            name="measurement_id"
+                        <input type="text"
+                            class="form-control validate"
+                            name="measurement"
+                            value="${measurement}"
                             required>
-                            ${getMeasurementOptionDisplay(measurement_id)}    
-                        </select>
                         <div class="d-block invalid-feedback"></div>
                     </div>
                 </div>

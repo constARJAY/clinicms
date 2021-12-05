@@ -106,8 +106,18 @@
                     quantity    = "",
                 } = item;
 
+                let maximumValue = 500;
+                let ariaValue  = quantity > maximumValue ? maximumValue : quantity;
+                let percentage = ariaValue / maximumValue * 100;
+                    percentage = percentage.toFixed(1);
+
                 tbodyHTML += `
                 <tr>
+                    <td>
+                        <div class="progress progress-lg mt-2">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: ${percentage}%" aria-valuenow="${ariaValue}" aria-valuemin="0" aria-valuemax="${maximumValue}">${percentage}%</div>
+                        </div>
+                    </td>
                     <td>${name}</td>
                     <td>${brand}</td>
                     <td>${quantity}</td>
@@ -126,6 +136,7 @@
             <table class="table table-bordered" id="tableMedicine">
                 <thead>
                     <tr class="text-center">
+                        <th>Percentage</th>
                         <th>Name</th>
                         <th>Brand</th>
                         <th>Quantity</th>
