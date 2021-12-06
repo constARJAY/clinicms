@@ -14,7 +14,7 @@
 </div>
 </div>
 <div class="hero-img hero-img2 position-relative">
-<img src="<?=base_url()?>assets/website/assets/img/hero/hero2.jpg" alt="" data-animation="pulse" data-transition-duration="5s">
+<center><img src="<?=base_url()?>assets/website/assets/img/hero/h1_hero1.png" alt="" data-animation="pulse" data-transition-duration="5s"></center>
 </div>
 </div>
 </div>
@@ -27,56 +27,23 @@
 <div class="row justify-content-center">
 <div class="col-xxl6 col-xl-7 col-lg-7 col-md-6">
 <div class="testimonial-active owl-carousel ">
+    <?php foreach ($anouncement as $key => $value):?>
+        <div class="single-testimonial ">
 
-<div class="single-testimonial ">
+            <div class="testimonial-caption ">
+                <div class="testimonial-top-cap">
+                    <h5><?=$value["title"]?></h5>
+                    <p><?=$value["description"]?></p>
+                </div>
 
-<div class="testimonial-caption ">
-<div class="testimonial-top-cap">
-<img src="assets/img/icon/xquotes-sign.png.pagespeed.ic.MZh5gEW9oZ.png" alt="" class="quotes-sign mb-20">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non mauris nulla tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim</p>
-</div>
-
-<div class="testimonial-founder d-flex align-items-center">
-<div class="founder-text">
-<span>- Sharon Needles</span>
-</div>
-</div>
-</div>
-</div>
-
-
-<div class="single-testimonial ">
-
-<div class="testimonial-caption ">
-<div class="testimonial-top-cap">
-<img src="assets/img/icon/xquotes-sign.png.pagespeed.ic.MZh5gEW9oZ.png" alt="" class="quotes-sign mb-20">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non mauris nulla tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim</p>
-</div>
-
-<div class="testimonial-founder d-flex align-items-center">
-<div class="founder-text">
-<span>- Sharon Needles</span>
-</div>
-</div>
-</div>
-</div>
-
-
-<div class="single-testimonial ">
-
-<div class="testimonial-caption ">
-<div class="testimonial-top-cap">
-<img src="assets/img/icon/xquotes-sign.png.pagespeed.ic.MZh5gEW9oZ.png" alt="" class="quotes-sign mb-20">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non mauris nulla tincidunt fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim</p>
-</div>
-
-<div class="testimonial-founder d-flex align-items-center">
-<div class="founder-text">
-<span>- Sharon Needles</span>
-</div>
-</div>
-</div>
-</div>
+                <div class="testimonial-founder d-flex align-items-center">
+                    <div class="founder-text">
+                        <span>- <?=$value["fullname"]?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach;?>
 
 </div>
 </div>

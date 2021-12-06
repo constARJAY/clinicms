@@ -13,7 +13,7 @@
 </div>
 </div>
 <div class="hero-img hero-img2 position-relative">
-<img src="<?=base_url()?>assets/website/assets/img/hero/hero2.jpg" alt="" data-animation="pulse" data-transition-duration="5s">
+<center><img src="<?=base_url()?>assets/website/assets/img/hero/h1_hero1.png" alt="" data-animation="pulse" data-transition-duration="5s"></center>
 </div>
 </div>
 </div>

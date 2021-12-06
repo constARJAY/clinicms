@@ -19,8 +19,8 @@
 <img src="<?=base_url()?>assets/website/assets/img/hero/tooth.png" alt="">
 </div>
 </div>
-<div class="hero-img position-relative">
-<img src="<?=base_url()?>assets/website/assets/img/hero/h1_hero1.jpg" alt="" data-animation="pulse" data-transition-duration="5s">
+<div class="hero-img position-relative d-flex justify-content-center">
+<img src="<?=base_url()?>assets/website/assets/img/hero/h1_hero1.png" style="width: 50%" alt="" data-animation="pulse" data-transition-duration="5s">
 </div>
 </div>
 </div>
