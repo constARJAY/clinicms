@@ -60,60 +60,29 @@
 </section>
 
 
-<section class="services-area section-padding fix section-bg">
-<div class="container">
+<section class="testimonial-area2 section-padding">
+<div class="container-fluid fix pb-40">
 <div class="row justify-content-center">
-<div class="col-xl-7 col-lg-8">
-<div class="section-tittle section-tittle2 text-center mb-55">
-<h2>Our treatment keeps you smile</h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non mauris nulla tincidunt fermentum. Sagittis pellentesque.</p>
-</div>
-</div>
-</div>
-<div class="services-active">
-<div class="single-cat text-center">
-<div class="cat-icon">
-<img src="<?=base_url()?>assets/website/assets/img/icon/services1.svg" alt="">
-</div>
-<div class="cat-cap">
-<h5><a href="#">Teeth Whitening</a></h5>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non mauris nulla tincidunt fermentum.</p>
-</div>
-</div>
-<div class="single-cat text-center">
-<div class="cat-icon">
-<img src="<?=base_url()?>assets/website/assets/img/icon/services2.svg" alt="">
-</div>
-<div class="cat-cap">
-<h5><a href="#">Teeth Cleaning</a></h5>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non mauris nulla tincidunt fermentum.</p>
-</div>
-</div>
-<div class="single-cat text-center">
-<div class="cat-icon">
-<img src="<?=base_url()?>assets/website/assets/img/icon/services3.svg" alt="">
-</div>
-<div class="cat-cap">
-<h5><a href="#">Quality Brackets</a></h5>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non mauris nulla tincidunt fermentum.</p>
-</div>
-</div>
-<div class="single-cat text-center">
-<div class="cat-icon">
-<img src="<?=base_url()?>assets/website/assets/img/icon/services4.svg" alt="">
-</div>
-<div class="cat-cap">
-<h5><a href="#">Modern Anesthetic</a></h5>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non mauris nulla tincidunt fermentum.</p>
-</div>
-</div>
-<div class="single-cat text-center">
-<div class="cat-icon">
-<img src="<?=base_url()?>assets/website/assets/img/icon/services3.svg" alt="">
-</div>
-<div class="cat-cap">
-<h5><a href="#">Teeth Cleaning</a></h5>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non mauris nulla tincidunt fermentum.</p>
+<div class="col-xxl6 col-xl-7 col-lg-7 col-md-6">
+<div class="testimonial-active owl-carousel ">
+    <?php foreach ($anouncement as $key => $value):?>
+        <div class="single-testimonial ">
+
+            <div class="testimonial-caption ">
+                <div class="testimonial-top-cap">
+                    <h5><?=$value["title"]?></h5>
+                    <p><?=$value["description"]?></p>
+                </div>
+
+                <div class="testimonial-founder d-flex align-items-center">
+                    <div class="founder-text">
+                        <span>- <?=$value["fullname"]?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach;?>
+
 </div>
 </div>
 </div>
