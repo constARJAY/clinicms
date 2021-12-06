@@ -19,7 +19,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="<?= base_url('assets/css/vertical-layout-light/style.css') ?>">
     <!-- endinject -->
-    <link rel="shortcut icon" href="<?= base_url('assets/images/favicon.png') ?>" />
+    <link rel="shortcut icon" href="<?= base_url('assets/images/modules/clinic-logo.png') ?>" />
 
     <!-- Font Awesome -->
     <link href="<?= base_url('assets/css/fontawesome.css') ?>" rel="stylesheet">
@@ -35,7 +35,7 @@
                     <div class="col-lg-6 d-flex align-items-center justify-content-center">
                         <div class="auth-form-transparent text-left p-3">
                             <div class="brand-logo">
-                                <img src="http://www.urbanui.com/yoraui/template/images/logo.svg" alt="logo">
+                                <img src="<?= base_url('assets/images/modules/login-logo.jpg') ?>" style="width: 250px;" alt="logo">
                             </div>
                             <h4>Welcome back!</h4>
                             <h6 class="font-weight-light">Happy to see you again!</h6>

@@ -177,7 +177,6 @@
 
         // ----- MONTHLY SURVEY AREA CHART -----
         function monthlySurveyAreaChart(monthlySurveyResult = []) {
-            console.log(monthlySurveyResult)
             if ($("#monthlySurveyResult").length && monthlySurveyResult.length) {
 
                 let labels = monthlySurveyResult.map(i => i.month);

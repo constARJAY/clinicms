@@ -126,7 +126,7 @@
                     <td>
                         <div class="text-center">
                             <a class="btn btn-outline-primary btnView"
-                                href="patient/profile?id=1"
+                                href="patient/profile?id=${patient_id}"
                                 target="_blank"
                                 patientID="${patient_id}"><i class="fas fa-eye"></i></a>
                             <button class="btn btn-outline-info btnEdit"

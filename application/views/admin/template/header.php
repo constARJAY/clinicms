@@ -25,7 +25,8 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="<?= base_url('assets/css/vertical-layout-light/style.css') ?>">
     <!-- endinject -->
-    <link rel="shortcut icon" href="<?= base_url('assets/images/favicon.png') ?>" />
+    <!-- <link rel="shortcut icon" href="<?= base_url('assets/images/favicon.png') ?>" /> -->
+    <link rel="shortcut icon" href="<?= base_url('assets/images/modules/clinic-logo.png') ?>" />
 
     <!-- Font Awesome -->
     <link href="<?= base_url('assets/css/fontawesome.css') ?>" rel="stylesheet">
